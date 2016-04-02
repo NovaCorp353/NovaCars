@@ -41,9 +41,9 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li><a href="clerk.html">Overview</a></li>
-            <li><a href="clerk_cust_transactions.html">Customer Transactions</a></li>
-			<li><a href="clerk_supp_transactions.html">Supplier Transactions</a></li>
+            <li><a href="sales_mgr.html">Overview</a></li>
+            <li><a href="suppliers_info.html">Suppliers Info</a></li>
+            <li><a href="sales_mgr_transactions.html">Supplier Transactions</a></li>
 			<li class="active"><a href="#">New Transaction <span class="sr-only">(current)</span></a></li>
           </ul>
 		  <ul class="nav nav-sidebar">
@@ -54,75 +54,36 @@
           <h1 class="page-header">New Transaction</h1>
 		
 		<form style="width:50%">
-		  <div class="form-group">
-			<label for="cust_email">Customer Email</label>
-			<input type="email" class="form-control" id="cust_email" placeholder="Email" required>
-		  </div>
-		  <div class="form-group">
-			<label for="auto_plate">Vehicle Plate Number</label>
-			<input type="text" class="form-control" id="auto_plate" placeholder="Plate Number" required>
-		  </div>
 		  <div class="form-group dropdown">
-			<label for="technician_email">Technician Email</label>
+			<label for="supp_name">Supplier name</label>
 			<div class="input-group">
-				<input type="email" class="form-control" id="technician_email" disabled required placeholder="selectedemail@novacorp.com">
+				<input type="email" class="form-control" id="supp_name" disabled required placeholder="Supplier Name Here">
 				<span class="input-group-btn" id="technician_email_dropdown">
 					<button type="button" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> 
 						
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="technician_email">
-						<li><a href="#">someone1@novacorp.com - Role - Salary Here</a></li>
-						<li><a href="#">someone2@novacorp.com - Engine specialist - XXXX</a></li>
+						<li><a href="#">Supplier name 1</a></li>
+						<li><a href="#">Supplier name 2</a></li>
 					</ul>
 				</span>
 			</div>
 		  </div>
 		  <div class="form-group">
-			<label for="revenue">Revenue</label>
-			<input type="number" class="form-control" id="revenue" placeholder="Revenue">
+			<label for="part_type">Spare Part Type</label>
+			<input type="text" class="form-control" id="part_type" placeholder="Spare part type" required>
 		  </div>
 		  <div class="form-group">
-			<label for="operation_list">Operations</label>
-			<input type="text" id="operation-list" class="form-control" placeholder="Operation name 1; operation name 2;" disabled required>
+			<label for="part_model">Spare Part Model</label>
+			<input type="text" class="form-control" id="part_model" placeholder="Spare part model" required>
+		  </div>
+		  <div class="form-group">
+			<label for="part_cnt">Spare Part Count</label>
+			<input type="number" class="form-control" id="part_cnt" placeholder="XXXX" required>
 		  </div>		 
 		  <button type="submit" class="btn btn-success">Complete Transaction</button>
 		</form>
-		
-		<h2 class="sub-header">Select operations</h2>
-		<form class="form-inline" role="form">
-			<div class="form-group">
-				<input style="width:300px" type="text" placeholder="Filter by operation or department name" class="form-control">
-				<button type="submit" class="btn btn-primary">Filter</button>	
-			</div>
-		</form>
-		<div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><input type="checkbox"></th>
-                  <th>Operation Name</th>
-				  <th>Providing Department</th>
-                  <th>Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><input type="checkbox"></td>
-				  <td>Operation name here</td>
-				  <td>Department name here</td>
-                  <td>XXXX</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox"></td>
-				  <td>Operation name here</td>
-				  <td>Department name here</td>
-                  <td>XXXX</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
 		
         </div>
       </div>
