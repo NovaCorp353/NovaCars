@@ -1,1 +1,0 @@
-$('#scope_toggle').bootstrapSwitch();
