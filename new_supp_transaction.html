@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Nova Cars</title>
+
+      <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Nova Cars</a>
+        </div>
+		<form class="navbar-form navbar-right">
+				<a href="logout.html" class="btn btn-danger">Log out</a>
+		</form>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="sales_mgr.html">Overview</a></li>
+            <li><a href="suppliers_info.html">Suppliers Info</a></li>
+            <li><a href="sales_mgr_transactions.html">Supplier Transactions</a></li>
+			<li class="active"><a href="#">New Transaction <span class="sr-only">(current)</span></a></li>
+          </ul>
+		  <ul class="nav nav-sidebar">
+			<li><a href="customer.html">Customer Profile</a></li>
+		 </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">New Transaction</h1>
+		
+		<form style="width:50%">
+		  <div class="form-group dropdown">
+			<label for="supp_name">Supplier name</label>
+			<div class="input-group">
+				<input type="email" class="form-control" id="supp_name" disabled required placeholder="Supplier Name Here">
+				<span class="input-group-btn" id="technician_email_dropdown">
+					<button type="button" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> 
+						
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="technician_email">
+						<li><a href="#">Supplier name 1</a></li>
+						<li><a href="#">Supplier name 2</a></li>
+					</ul>
+				</span>
+			</div>
+		  </div>
+		  <div class="form-group">
+			<label for="part_type">Spare Part Type</label>
+			<input type="text" class="form-control" id="part_type" placeholder="Spare part type" required>
+		  </div>
+		  <div class="form-group">
+			<label for="part_model">Spare Part Model</label>
+			<input type="text" class="form-control" id="part_model" placeholder="Spare part model" required>
+		  </div>
+		  <div class="form-group">
+			<label for="part_cnt">Spare Part Count</label>
+			<input type="number" class="form-control" id="part_cnt" placeholder="XXXX" required>
+		  </div>		 
+		  <button type="submit" class="btn btn-success">Complete Transaction</button>
+		</form>
+		
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
