@@ -2,7 +2,7 @@ $('#register').click(function(){
 	window.location.href = 'register.html';
 });	
 
-$('#signin-btn').click(function(event) {
+$('#signin-form').submit(function(event) {
 	event.preventDefault();
 	var e = $('#inputEmail').val();
 	var p = $('#inputPassword').val();
@@ -29,5 +29,6 @@ $('#signin-btn').click(function(event) {
 });
 
 function loggedin(){
+	$('#signin-err').css('visibility','hidden'); 
 	alert('logged in');
 }
