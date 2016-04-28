@@ -31,4 +31,28 @@ $('#signin-form').submit(function(event) {
 function loggedin(){
 	$('#signin-err').css('visibility','hidden'); 
 	alert('logged in');
+
+	var customer = isCustomer();
+	var employee = isEmployee();
+
+	if( !customer && !employee){
+		// TODO error
+		$('#signin-err-lb').text('Your account is registered neither as a customer nor as an employee.');
+		$('#signin-err').css('visibility','visible'); 
+	} else if (!customer && employee){
+		// TODO only employee
+	} else if (customer && !employee){
+		// TODo only customer
+	} else {
+		// TODO both
+	}
+}
+
+
+function isCustomer(){
+	// TODO
+}
+
+function isEmployee(){
+	// TODO
 }

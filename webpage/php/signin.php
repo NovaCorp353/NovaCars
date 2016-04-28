@@ -2,17 +2,21 @@
 
 include 'conn.php';
 
-function getLoginCredentials($mysqli){
+function getLoginCredentials(){
+	global $conn;
+
 	if(!empty($_POST["email"]) && !empty($_POST["password"])){
 		$email = $_POST["email"];
 		$pass = $_POST["password"];
 
-		$query = "SELECT email FROM users WHERE email = '$email' AND password = '$pass'";
-		$res = $mysqli->query($query);
+		$query = "SELECT email, first_name, last_name FROM users WHERE email = '$email' AND password = '$pass'";
+		$res = $conn->query($query);
 		if (mysqli_num_rows($res) == 1) 
 		{
 			session_start();
 			$_SESSION["user"] = $email;
+			$_SESSION["firstName"] = $res['first_name'];
+			$_SESSION["lastName"] = $res['last_name'];
 			echo 1;
 		} else 
 		echo 0;
