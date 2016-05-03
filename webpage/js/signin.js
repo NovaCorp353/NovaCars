@@ -2,32 +2,57 @@ $('#register').click(function(){
 	window.location.href = 'register.html';
 });	
 
-$('#signin-btn').click(function(event) {
+$('#signin-form').submit(function(event) {
 	event.preventDefault();
-	var u = $('#inputEmail').val();
+	var e = $('#inputEmail').val();
 	var p = $('#inputPassword').val();
-	if(u != null && u != "" && p != null && p != ""){
+	if(e != null && e != "" && p != null && p != ""){
 		$.ajax({
 			type: "POST",
-			url: "php/login.php",
-			data: {username:u, password:p},
+			url: "php/signin.php",
+			data: {email:e, password:p},
 			cache: false,
 			beforeSend: function(){ $("#signin-btn").val('Connecting...');},
 			success: function(data){
 				if(data == 1) {					
 					loggedin();
 				} else {
-					$('#signin-err').text('Login failed. Check credentials!');
+					$('#signin-err-lb').text('Login failed. Check credentials!');
 					$('#signin-err').css('visibility','visible');   
 				}
 			}
 		});
 	} else {
-		$('#signin-err').text('All fields are required!');
+		$('#signin-err-lb').text('All fields are required!');
 		$('#signin-err').css('visibility','visible');   
 	}
 });
 
 function loggedin(){
+	$('#signin-err').css('visibility','hidden'); 
 	alert('logged in');
+
+	var customer = isCustomer();
+	var employee = isEmployee();
+
+	if( !customer && !employee){
+		// TODO error
+		$('#signin-err-lb').text('Your account is registered neither as a customer nor as an employee.');
+		$('#signin-err').css('visibility','visible'); 
+	} else if (!customer && employee){
+		// TODO only employee
+	} else if (customer && !employee){
+		// TODo only customer
+	} else {
+		// TODO both
+	}
+}
+
+
+function isCustomer(){
+	// TODO
+}
+
+function isEmployee(){
+	// TODO
 }
