@@ -1,8 +1,25 @@
 <?php
-function checkRole($tablename){
+
+// Role constants
+define("USER", "User");
+define("EMPLOYEE", "Employee");
+define("CUSTOMER", "Customer");
+define("MANAGER", "Manager");
+define("CLERK", "Clerk");
+define("TECHNICIAN", "Technician");
+define("SALES_MANAGER", "SalesManager");
+
+// Content type constants
+define("OVERVIEW", "Overview");
+define("DEPARTMENT_INFO", "DepartmentInfo");
+define("CUST_TRANSACTIONS", "CustomerTransactions");
+define("SUPP_TRANSACTIONS", "SupplierTransactions");
+define("NEW_TRANSACTION", "NewTransaction");
+define("SUPP_INFO", "SupplierInfo");
+
+function checkRole($email, $tablename){
 	global $conn;
 
-	$email = $_SESSION['user'];
 	$query = 
 	"SELECT email
 	FROM '$tablename'
@@ -15,68 +32,33 @@ function checkRole($tablename){
 	return false;
 }
 
-function getFirstName(){
+function getName($email){
 	global $conn;
 
-	if(!isset($_SESSION['firstName'])){
-		$query = 
-		'SELECT first_name, last_name
-		 FROM User 
-		 WHERE email = ' . $_SESSION['user'];
+	$query = 
+	"SELECT first_name, last_name
+	FROM User 
+	WHERE email = '$email'";
 
-		$res = $conn->query($query);
+	$res = $conn->query($query);
 
-		if(mysqli_num_rows($res) == 1){
-
-			$_SESSION['firstName'] = $res['first_name'];
-			$_SESSION['lastName'] = $res['last_name'];
-			return $_SESSION['firstName'];
-		}
-		return 0;
-	}
-	return $_SESSION['firstName'];
-
+	if(mysqli_num_rows($res) == 1)
+		return $res;
+	return 0;
 }
 
-function getLastName(){
+function getEmployee($email){
 	global $conn;
 
-	if(!isset($_SESSION['lastName'])){
-		$query = 
-		'SELECT first_name, last_name
-		 FROM User 
-		 WHERE email = ' . $_SESSION['user'];
+	$query = 
+	"SELECT salary, role, expertise_lvl, dept_name, since
+	FROM Employee 
+	WHERE email = '$email'";
 
-		$res = $conn->query($query);
+	$res = $conn->query($query);
 
-			if(mysqli_num_rows($res) == 1){
-			$_SESSION['firstName'] = $res['first_name'];
-			$_SESSION['lastName'] = $res['last_name'];
-			return $_SESSION['lastName'];
-		}
-		return 0;
-	}
-	return $_SESSION['lastName'];
-}
-
-function getDepartmentName(){
-	global $conn;
-
-	if(!isset($_SESSION['dept_name'])){
-		$query = 
-		'SELECT dept_name
-		 FROM Employee 
-		 WHERE email = ' . $_SESSION['user'];
-
-		$res = $conn->query($query);
-
-		if(mysqli_num_rows($res) == 1){
-
-			$_SESSION['dept_name'] = $res['dept_name'];
-			return $_SESSION['dept_name'];
-		}
-		return 0;
-	}
-	return $_SESSION['dept_name'];
+	if(mysqli_num_rows($res) == 1)
+		return $res;
+	return 0;
 }
 ?>
