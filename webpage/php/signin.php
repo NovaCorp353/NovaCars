@@ -1,6 +1,6 @@
 <?php
 
-include 'conn.php';
+include('conn.php');
 
 function getLoginCredentials(){
 	global $conn;
@@ -9,14 +9,12 @@ function getLoginCredentials(){
 		$email = $_POST["email"];
 		$pass = $_POST["password"];
 
-		$query = "SELECT email, first_name, last_name FROM users WHERE email = '$email' AND password = '$pass'";
+		$query = "SELECT email FROM users WHERE email = '$email' AND password = '$pass'";
 		$res = $conn->query($query);
 		if (mysqli_num_rows($res) == 1) 
 		{
 			session_start();
-			$_SESSION["user"] = $email;
-			$_SESSION["firstName"] = $res['first_name'];
-			$_SESSION["lastName"] = $res['last_name'];
+			$_SESSION["user"] = $email;			
 			echo 1;
 		} else 
 		echo 0;

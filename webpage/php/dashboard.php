@@ -1,6 +1,7 @@
 <?php
 include('conn.php');
 include('util.php');
+//include('session.php');
 
 function getCustomerProfile(){
 	// TODO
