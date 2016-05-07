@@ -12,12 +12,15 @@ function getCustomerProfile(){
 		// TODO do sessions (Burcu)
 		// TOOD put this in get customer profile function
 
-		$membershipStatus = // TODO;
-		$bonusPoints = // TODO;
-		$autoList = // TODO;
-		$history = // TODO;
+		$firstName = '';// TODO;
+		$lastName = '';// TODO;
 
-		$content .= 
+		$membershipStatus = '';// TODO;
+		$bonusPoints = '';// TODO;
+		$autoList = '';// TODO;
+		$history = '';// TODO;
+
+		$content = 
 		'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<h1 class="page-header">' . $firstName . ' ' . $lastname . '</h1>
 		<h3>' . $membershipStatus . ' Customer</h3>
@@ -437,24 +440,23 @@ function isCustomer($email){
 
 // Execution starts here
 $conn = openConn();
-$action = $_POST['action'];
 
 // Check what action is required
-if(!isset($action))
+if(!isset($_POST['action']))
 	$res = getOverview();
-else if(strcmp($action, OVERVIEW))
+else if(strcmp($_POST['action'], OVERVIEW))
 	$res = getOverview();
-else if(strcmp($action, DEPARTMENT_INFO))
+else if(strcmp($_POST['action'], DEPARTMENT_INFO))
 	$res = getDepartmentInfo();
-else if(strcmp($action, CUST_TRANSACTIONS))
+else if(strcmp($_POST['action'], CUST_TRANSACTIONS))
 	$res = getCustomerTransactions();
-else if(strcmp($action, SUPP_TRANSACTIONS))
+else if(strcmp($_POST['action'], SUPP_TRANSACTIONS))
 	$res = getSupplierTransactions();
-else if(strcmp($action, NEW_TRANSACTION))
+else if(strcmp($_POST['action'], NEW_TRANSACTION))
 	$res = getNewTrasaction();
-else if(strcmp($action, SUPP_INFO))
+else if(strcmp($_POST['action'], SUPP_INFO))
 	$res = getSupplierInfo();
-else if(strcmp($ac, CUST_PROFILE))
+else if(strcmp($_POST['action'], CUST_PROFILE))
 	$res = getCustomerProfile();
 else 
 	$res = getOverview();
