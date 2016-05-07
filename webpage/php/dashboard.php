@@ -65,12 +65,17 @@ function getCustomerTransactions(){
 
 	if(strcmp($role, MANAGER))
 	{
-		$deptName = "todo";
-		$firstName = "";
-		$lastName = "";
-		$noOfTrans = 1;
-		$revenue = 6;
+		$header = getMgrCustTransHeader($_SESSION["user"]);
+		$deptName = $header['dept_name'];
+		$firstName = $header['first_name'];
+		$lastName = $header['last_name'];
+
+		$stats = getMgrCustTransStats($deptName);
+		$noOfTrans = $stats['trans_count'];
+		$revenue = $stats['tot_revenue'];
 		
+		$filter = '';
+		$allTransactions = getMgrCustTrans($deptName, $filter);
 		$content = ' 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">' . $deptName . '</h1>
