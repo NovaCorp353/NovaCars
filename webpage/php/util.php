@@ -71,4 +71,58 @@ function getEmployee($email){
 	closeConn($conn);
 	return 0;
 }
+
+function getMgrCustTransHeader($email)
+{
+	global $conn;
+
+	$query = 
+	"SELECT first_name, last_name, dept_name
+	 FROM manager NATURAL JOIN user
+	 WHERE email = '$email';";
+
+	 $res = $conn->query($query);
+
+	 if(mysqli_num_rows($res) == 1)
+	 	return $res;
+	 return 0;
+}
+
+function getMgrCustTransStats($dept_name)
+{
+	global $conn;
+
+	$query = 
+	"SELECT COUNT(transaction_id) as trans_count, SUM(amount) as tot_revenue
+		FROM transaction NATURAL JOIN CustomerOperation
+		WHERE dept_name = '$dept_name';"
+
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) == 1)
+	 	return $res;
+	return 0;
+}
+
+function getMgrCustTrans($dept_name, $filter)
+{
+	global $conn;
+
+	$query = 
+	"SELECT T.transaction_id, UC.first_name, UC.last_name, A.model, CO.op_name, 
+			UCl.first_name, UCl.last_name, T.date
+			FROM ((((CustomerOperation CO JOIN User UCl ON UCl.email = CO.clerk_email)
+					JOIN User UC ON UC.email = CO.customer_email)
+					JOIN Auto A ON A.plate = CO.auto_plate)
+					JOIN Transaction T ON T.id = CO.transaction_id)
+					JOIN Employee E ON E.email = CO.clerk_email
+			WHERE E.dept_name = '$dept_name' AND CO.op_name LIKE "%'$filter'%";";
+
+	$res = $conn->query($query);
+
+	 if(mysqli_num_rows($res) == 1)
+	 	return $res;
+	 return 0;
+}
+
 ?>
