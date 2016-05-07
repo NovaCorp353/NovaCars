@@ -15,7 +15,8 @@ $('#signin-form').submit(function(event) {
 			beforeSend: function(){ $("#signin-btn").val('Connecting...');},
 			success: function(data){
 				if(data == 1) {	
-					loggedin();
+					$('#signin-err').css('visibility','hidden'); 
+					window.location.href = 'dashboard.html'; 
 				} else {
 					$('#signin-err-lb').text('Login failed. Check credentials!');
 					$('#signin-err').css('visibility','visible');   
@@ -27,28 +28,3 @@ $('#signin-form').submit(function(event) {
 		$('#signin-err').css('visibility','visible');   
 	}
 });
-
-function loggedin(){
-	$('#signin-err').css('visibility','hidden'); 
-
-	window.location.href = 'dashboard.html'; // TODO or probably ../dashboard.html
-	var content = $('#content');
-	
-	// Get Overview
-	$.ajax({
-			type: "POST",
-			url: "php/dashboard.php",
-			cache: false,
-			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
-			success: function(data){
-				if(data) {	
-					alert(data + " - ");
-					content.html(data);
-				} else {
-					// TODO also log out / end session
-					$('#signin-err-lb').text('Unable to retrieve data at this time! Try again later.');
-					$('#signin-err').css('visibility','visible');   
-				}
-			}
-		});
-}

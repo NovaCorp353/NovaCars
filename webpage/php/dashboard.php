@@ -1,5 +1,4 @@
 <?php
-include('conn.php');
 include('util.php');
 //include('session.php');
 
@@ -23,7 +22,7 @@ function getCustomerProfile(){
 
 		$content = 
 		'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<h1 class="page-header">' . $firstName . ' ' . $lastname . '</h1>
+		<h1 class="page-header">' . $firstName . ' ' . $lastName . '</h1>
 		<h3>' . $membershipStatus . ' Customer</h3>
 		<h4 class="txt-muted">' . $bonusPoints . '  points collected</h4>
 
@@ -33,7 +32,7 @@ function getCustomerProfile(){
 					<div class="panel-heading">Customer profile</div>
 
 					<ul class="list-group">
-						<li class="list-group-item"><strong>Email</strong>: ' . $email . '</li>
+						<li class="list-group-item"><strong>Email</strong>: ' . $_SESSION['user'] . '</li>
 						<li class="list-group-item"><strong>Password</strong>: <button class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Change</button></li>
 					</ul>
 				</div>
@@ -45,6 +44,8 @@ function getCustomerProfile(){
 		<h2 class="sub-header">History</h2>
 		' . $history . '
 	</div>';
+
+	return $content;
 
 }
 
@@ -204,8 +205,6 @@ function getSupplierInfo(){
 
 function getOverview(){
 
-	// TODO dunno how to do this. Should this be called before a session variable is accessed?
-	// session_start();
 	$email = $_SESSION['user'];
 
 	if(isset($_SESSION['role'])) {
@@ -249,11 +248,11 @@ function getOverview(){
 		</div>
 	</div>';
 
-	$rightPanel = getRightPanel($email, OVERVIEW);
-	return $rightPanel . $content;
+		$rightPanel = getRightPanel($email, OVERVIEW);
+		return $rightPanel . $content;
 
 	} else
-	return getCustomerProfile($email);
+		return getCustomerProfile($email);
 }
 
 function getRightPanel($email, $cur_tab){
@@ -440,7 +439,7 @@ function isCustomer($email){
 }
 
 // Execution starts here
-$conn = openConn();
+session_start();
 
 // Check what action is required
 if(!isset($_POST['action']))
@@ -461,7 +460,5 @@ else if(strcmp($_POST['action'], CUST_PROFILE))
 	$res = getCustomerProfile();
 else 
 	$res = getOverview();
-
-closeConn($conn);
 echo $res;
 ?>	

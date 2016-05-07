@@ -1,4 +1,5 @@
 <?php
+include('conn.php');
 
 // Role constants
 define("USER", "User");
@@ -19,46 +20,55 @@ define("SUPP_INFO", "SupplierInfo");
 define("CUST_PROFILE", "CustomerProfile");
 
 function checkRole($email, $tablename){
-	global $conn;
+	$conn = openConn();
 
 	$query = 
 	"SELECT email
-	FROM '$tablename'
-	WHERE email = '$email'";
+	FROM $tablename
+	WHERE email = '$email';";
 
-	if($conn->query($query))
-		return true;
+	if($conn->query($query) == TRUE){
+		closeConn($conn);
+		return 1;
+	}
 
-	return false;
+	closeConn($conn);
+	return 0;
 }
 
 function getName($email){
-	global $conn;
+	$conn = openConn();
 
 	$query = 
 	"SELECT first_name, last_name
 	FROM User 
-	WHERE email = '$email'";
+	WHERE email = '$email';";
 
 	$res = $conn->query($query);
 
-	if(mysqli_num_rows($res) == 1)
-		return $res;
+	if(mysqli_num_rows($res) == 1){
+		closeConn($conn);
+		return $res->fetch_assoc();
+	}
+
+	closeConn($conn);
 	return 0;
 }
 
 function getEmployee($email){
-	global $conn;
+	$conn = openConn();
 
 	$query = 
 	"SELECT salary, role, expertise_lvl, dept_name, since
 	FROM Employee 
-	WHERE email = '$email'";
+	WHERE email = '$email';";
 
-	$res = $conn->query($query);
+	if($conn->query($query) == TRUE){
+		closeConn($conn);
+		return $res->fetch_assoc();
+	}
 
-	if(mysqli_num_rows($res) == 1)
-		return $res;
+	closeConn($conn);
 	return 0;
 }
 ?>

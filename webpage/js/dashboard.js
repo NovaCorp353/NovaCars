@@ -5,8 +5,27 @@ $(document).ready(function() {
 			success: function(data){
 				if(data == 0)
 					window.location.href = 'index.html';
-				else
-					alert(data);
+			}
+		});
+
+    var content = $('#content');
+	
+	// Get content for overview by default
+	$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			cache: false,
+			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
+			success: function(data){
+				if(data) {	
+					alert(data + " $$$$$$$ ");
+					content.html(data);
+				} else {
+					// TODO also log out / end session
+					$('#signin-err-lb').text('Unable to retrieve data at this time! Try again later.');
+					$('#signin-err').css('visibility','visible');   
+				}
 			}
 		});
 });
+

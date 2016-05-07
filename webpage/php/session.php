@@ -6,5 +6,5 @@
      //die();
    }
    else
-   		echo $_SESSION["user"];
+   		echo 1;
 ?>
