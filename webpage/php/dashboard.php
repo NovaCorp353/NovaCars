@@ -205,7 +205,7 @@ function getSupplierInfo(){
 function getOverview(){
 
 	// TODO dunno how to do this. Should this be called before a session variable is accessed?
-	session_start();
+	// session_start();
 	$email = $_SESSION['user'];
 
 	if(isset($_SESSION['role'])) {

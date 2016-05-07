@@ -14,7 +14,7 @@ $('#signin-form').submit(function(event) {
 			cache: false,
 			beforeSend: function(){ $("#signin-btn").val('Connecting...');},
 			success: function(data){
-				if(data) {					
+				if(data == 1) {	
 					loggedin();
 				} else {
 					$('#signin-err-lb').text('Login failed. Check credentials!');
@@ -30,7 +30,6 @@ $('#signin-form').submit(function(event) {
 
 function loggedin(){
 	$('#signin-err').css('visibility','hidden'); 
-	alert('logged in');
 
 	window.location.href = 'dashboard.html'; // TODO or probably ../dashboard.html
 	var content = $('#content');

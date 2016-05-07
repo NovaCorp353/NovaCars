@@ -9,7 +9,7 @@ function getLoginCredentials(){
 		$email = $_POST["email"];
 		$pass = $_POST["password"];
 
-		$query = "SELECT email FROM users WHERE email = '$email' AND password = '$pass'";
+		$query = "SELECT email FROM User WHERE email = '$email' AND password = '$pass'";
 		$res = $conn->query($query);
 		if (mysqli_num_rows($res) == 1) 
 		{
