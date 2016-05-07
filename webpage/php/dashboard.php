@@ -48,39 +48,19 @@ function getDepartmentInfo(){
 	// TODO
 }
 
-function getManagerTransactions(){
+function getCustomerTransactions(){
 	// TODO
 }
 
-function getClerkTransactions(){
+function getNewTransaction(){
 	// TODO
 }
 
-function getClerkNewTransactionOperations(){
+function getSupplierTransactions(){
 	// TODO
 }
 
-function getClerkSupplierTransactions(){
-	// TODO
-}
-
-function getCustomerTransactionDetails(){
-	// TODO
-}
-
-function getSupplierTransactionDetails(){
-	// TODO
-}
-
-function getSalesManagerSupplierTransactions(){
-	// TODO
-}
-
-function getSalesManagerNewTransactionSupplierNames(){
-	// TODO
-}
-
-function getSalesManagerSuppliersInfo(){
+function getSupplierInfo(){
 	// TODO
 }
 
@@ -139,12 +119,9 @@ function getOverview(){
 }
 
 function getRightPanel($email, $cur_tab){
-	// Get Role and save it in session variables
+	
 	$role = getRole($_SESSION['user']);
-	$_SESSION['role'] = $role;
-
 	$isCustomer = isCustomer($email);
-	$_SESSION['isCustomer'] = $isCustomer;	
 
 	// Determine if user is an employee
 	$employee = checkRole($email, EMPLOYEE);
@@ -170,89 +147,89 @@ function getRightPanel($email, $cur_tab){
 
 			if(strcmp($cur_tab, DEPARTMENT_INFO))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ', ' . MANAGER . ')">Department Info <span class="sr-only">(current)</span></a></li> 
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . MANAGER . ')">Transactions</a></li>';
+				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info <span class="sr-only">(current)</span></a></li> 
+				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 				
 			else if(strcmp($cur_tab, CUST_TRANSACTIONS))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ', ' . MANAGER . ')">Department Info</a></li> 
-				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . MANAGER . ')">Transactions <span class="sr-only">(current)</span></a></li>';
+				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li> 
+				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions <span class="sr-only">(current)</span></a></li>';
 
 			else
 				$rightPanel .=
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ', ' . MANAGER . ')">Department Info</a></li> 
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . MANAGER . ')">Transactions</a></li>';
+				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li> 
+				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 		}
 
 		else if(strcmp($role, TECHNICIAN)){
 
 			if(strcmp($cur_tab, DEPARTMENT_INFO))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ', ' . TECHNICIAN . ')">Department Info <span class="sr-only">(current)</span></a></li>
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . TECHNICIAN . ')">Transactions</a></li>';
+				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info <span class="sr-only">(current)</span></a></li>
+				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 				
 			else if(strcmp($cur_tab, CUST_TRANSACTIONS))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ', ' . TECHNICIAN . ')">Department Info</a></li>
-				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . TECHNICIAN . ')">Transactions <span class="sr-only">(current)</span></a></li>';
+				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li>
+				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions <span class="sr-only">(current)</span></a></li>';
 
 			else
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ', ' . TECHNICIAN . ')">Department Info</a></li>
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . TECHNICIAN . ')">Transactions</a></li>';
+				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li>
+				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 		}
 
 		else if(strcmp($role, CLERK)){
 
 			if(strcmp($cur_tab, CUST_TRANSACTIONS))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . CLERK . ')">Customer Transactions <span class="sr-only">(current)</span></a></li>
-				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . CLERK . ')">Supplier Transactions</a></li>
-	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . CLERK . ')">New Transaction</a></li>'; // TODO
+				'<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions <span class="sr-only">(current)</span></a></li>
+				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
+	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
 				
 			else if(strcmp($cur_tab, SUPP_TRANSACTIONS))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . CLERK . ')">Customer Transactions</a></li>
-				<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . CLERK . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
-	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . CLERK . ')">New Transaction</a></li>'; // TODO
+				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
+				<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
+	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
 
 			else if(strcmp($cur_tab, NEW_TRANSACTION))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . CLERK . ')">Customer Transactions</a></li>
-				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . CLERK . ')">Supplier Transactions</a></li>
-	            <li class="active"><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . CLERK . ')">New Transaction <span class="sr-only">(current)</span></a></li>'; // TODO
+				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
+				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
+	            <li class="active"><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction <span class="sr-only">(current)</span></a></li>'; // TODO
 
 			else
 				$rightPanel .=
-				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ', ' . CLERK . ')">Customer Transactions</a></li>
-				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . CLERK . ')">Supplier Transactions</a></li>
-	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . CLERK . ')">New Transaction</a></li>'; // TODO
+				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
+				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
+	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
         }
 
         else if(strcmp($role, SALES_MANAGER)){
 
         	if(strcmp($cur_tab, SUPP_TRANSACTIONS))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . SALES_MANAGER . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
-	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . SALES_MANAGER . ')">New Transaction</a></li>
-	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ', ' . SALES_MANAGER . ')">Suppliers Info</a></li>';
+				'<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
+	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
+	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
 				
 			else if(strcmp($cur_tab, NEW_TRANSACTION))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . SALES_MANAGER . ')">Supplier Transactions</a></li>
-	        	<li class="active"><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . SALES_MANAGER . ')">New Transaction <span class="sr-only">(current)</span></a></li>
-	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ', ' . SALES_MANAGER . ')">Suppliers Info</a></li>';
+				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
+	        	<li class="active"><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction <span class="sr-only">(current)</span></a></li>
+	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
 
 			else if(strcmp($cur_tab, SUPP_INFO))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . SALES_MANAGER . ')">Supplier Transactions</a></li>
-	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . SALES_MANAGER . ')">New Transaction</a></li>
-	        	<li class="active"><a href="#" onclick="getContent( ' . SUPP_INFO . ', ' . SALES_MANAGER . ')">Suppliers Info <span class="sr-only">(current)</span></a></li>';
+				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . '">Supplier Transactions</a></li>
+	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
+	        	<li class="active"><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info <span class="sr-only">(current)</span></a></li>';
 			else
 	        	$rightPanel .= 
-	        	'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ', ' . SALES_MANAGER . ')">Supplier Transactions</a></li>
-	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ', ' . SALES_MANAGER . ')">New Transaction</a></li>
-	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ', ' . SALES_MANAGER . ')">Suppliers Info</a></li>';
+	        	'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
+	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
+	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
         }
 
         if($isCustomer){
@@ -260,11 +237,11 @@ function getRightPanel($email, $cur_tab){
         	if( strcmp($cur_tab, CUST_PROFILE))
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
-	        	<li class="active"><a href="#" onclick="getContent( ' . CUST_PROFILE . ', ' . CUSTOMER . ')">Customer Profile <span class="sr-only">(current)</span></a></li>';
+	        	<li class="active"><a href="#" onclick="getContent( ' . CUST_PROFILE . ')">Customer Profile <span class="sr-only">(current)</span></a></li>';
 	        else
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
-	        	<li><a href="#" onclick="getContent( ' . CUST_PROFILE . ', ' . CUSTOMER . ')">Customer Profile</a></li>';
+	        	<li><a href="#" onclick="getContent( ' . CUST_PROFILE . ')">Customer Profile</a></li>';
         }
 
         $rightPanel .= 
@@ -288,43 +265,66 @@ function getRightPanel($email, $cur_tab){
 function getRole($email){
 	// Determine the position
 
-	// Determine if user is manager
-	if(checkRole($email, MANAGER))
-		return MANAGER;
+	if(!isset($_SESSION['role'])){ // Caching
 
-	// Determine if user is technician
-	if(checkRole($email, TECHNICIAN))
-		return TECHNICIAN;
+		// Determine if user is manager
+		if(checkRole($email, MANAGER))
+			$_SESSION['role'] = MANAGER;
 
-	// Determine if user is clerk
-	if(checkRole($email, CLERK))
-		return CLERK;
+		// Determine if user is technician
+		else if(checkRole($email, TECHNICIAN))
+			$_SESSION['role'] = TECHNICIAN;
 
-	// Determine if user is sales manager
-	if(checkRole($email, SALES_MANAGER))
-		return SALES_MANAGER;
+		// Determine if user is clerk
+		else if(checkRole($email, CLERK))
+			$_SESSION['role'] = CLERK;
 
-	return CUSTOMER;
+		// Determine if user is sales manager
+		else if(checkRole($email, SALES_MANAGER))
+			$_SESSION['role'] = SALES_MANAGER;
+
+		else 
+			$_SESSION['role'] = CUSTOMER;
+	}
+
+	return $_SESSION['role'];
 }
 
 // Determine if the user is a customer
 function isCustomer($email){
-	$customer = checkRole($email, CUSTOMER);
-	$_SESSION['isCustomer'] = $customer;
-	return $customer;
+
+	if(!isset($_SESSION['isCustomer'])){ // Caching
+		$customer = checkRole($email, CUSTOMER);
+		$_SESSION['isCustomer'] = $customer;
+	}
+
+	return $_SESSION['isCustomer'];
 }
 
+// Execution starts here
 $conn = openConn();
-// Check what action is required
-switch($_POST['action']){
-	case 'overview': 
-	$res = getOverview();
-	break;
+$action = $_POST['action'];
 
-	default:
-	$res = 0;
-	break;
-}
+// Check what action is required
+if(!isset($action))
+	$res = getOverview();
+else if(strcmp($action, OVERVIEW))
+	$res = getOverview();
+else if(strcmp($action, DEPARTMENT_INFO))
+	$res = getDepartmentInfo();
+else if(strcmp($action, CUST_TRANSACTIONS))
+	$res = getCustomerTransactions();
+else if(strcmp($action, SUPP_TRANSACTIONS))
+	$res = getSupplierTransactions();
+else if(strcmp($action, NEW_TRANSACTION))
+	$res = getNewTrasaction();
+else if(strcmp($action, SUPP_INFO))
+	$res = getSupplierInfo();
+else if(strcmp($ac, CUST_PROFILE))
+	$res = getCustomerProfile();
+else 
+	$res = getOverview();
+
 closeConn($conn);
 return $res;
 ?>	

@@ -16,6 +16,7 @@ define("CUST_TRANSACTIONS", "CustomerTransactions");
 define("SUPP_TRANSACTIONS", "SupplierTransactions");
 define("NEW_TRANSACTION", "NewTransaction");
 define("SUPP_INFO", "SupplierInfo");
+define("CUST_PROFILE", "CustomerProfile");
 
 function checkRole($email, $tablename){
 	global $conn;
