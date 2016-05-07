@@ -11,7 +11,7 @@ function registerUser(){
 		$firstname = $_POST["firstname"];
 		$lastname = $_POST["lastname"];
 
-		$query = "INSERT INTO users (email, password, name, surname) VALUES ('$email', '$password', '$firstname', '$lastname');";
+		$query = "INSERT INTO User (email, password, first_name, last_name) VALUES ('$email', '$password', '$firstname', '$lastname');";
 		if ($conn->query($query) == TRUE) 
 		{
 			// $_SESSION["user"] = $uname; --> necessary?

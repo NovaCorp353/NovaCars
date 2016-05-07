@@ -3,7 +3,7 @@
 function openConn(){
 
 	$host = "localhost";
-	$user = "";
+	$user = "root";
 	$pass = "";
 	$db = "project";
 
