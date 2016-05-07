@@ -1,7 +1,10 @@
 <?php
    session_start();
    if(!isset($_SESSION["user"])){
-     header("location:index.html");
-     die();
+   	echo 0;
+     //header("location:../index.html");
+     //die();
    }
+   else
+   		echo $_SESSION["user"];
 ?>
