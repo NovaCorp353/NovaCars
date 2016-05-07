@@ -14,7 +14,7 @@ $('#signin-form').submit(function(event) {
 			cache: false,
 			beforeSend: function(){ $("#signin-btn").val('Connecting...');},
 			success: function(data){
-				if(data == 1) {					
+				if(data) {					
 					loggedin();
 				} else {
 					$('#signin-err-lb').text('Login failed. Check credentials!');
@@ -40,7 +40,7 @@ function loggedin(){
 			type: "POST",
 			url: "php/dashboard.php",
 			cache: false,
-			beforeSend: function(){content.html('<p>Retrieving data...</p>');),
+			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
 			success: function(data){
 				if(data == 1) {					
 					content.html(data);

@@ -5,7 +5,7 @@ function openConn(){
 	$host = "localhost";
 	$user = "";
 	$pass = "";
-	$db = "test";
+	$db = "project";
 
 	// Create connection
 	$mysqli = new mysqli($host, $user, $pass, $db);
