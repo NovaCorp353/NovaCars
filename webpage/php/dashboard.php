@@ -1,6 +1,6 @@
 <?php
-include 'conn.php'
-include 'util.php'
+include('conn.php');
+include('util.php');
 
 function getCustomerProfile(){
 	// TODO
@@ -104,19 +104,19 @@ function getCustomerTransactions(){
               <tbody>';
 
              	 // DO LOOP HERE TODO
-                <tr>
-                  <td>1</td>
-				  <td>Name Surname</td>
-				  <td>Auto Type 1</td>
-                  <td>
-					<p>Operaton Name 1</p>
-					<p>Operation Name 2</p>
-				  </td>
-                  <td>Name Surname</td>
-                  <td>XXX</td>
-                  <td>Date here</td>
-				  <td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
-                </tr>
+     //            <tr>
+     //              <td>1</td>
+				 //  <td>Name Surname</td>
+				 //  <td>Auto Type 1</td>
+     //              <td>
+					// <p>Operaton Name 1</p>
+					// <p>Operation Name 2</p>
+				 //  </td>
+     //              <td>Name Surname</td>
+     //              <td>XXX</td>
+     //              <td>Date here</td>
+				 //  <td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+     //            </tr>
 
 
 				$content .= '
@@ -200,16 +200,16 @@ function getSupplierInfo(){
 
 function getOverview(){
 
+	// TODO dunno how to do this. Should this be called before a session variable is accessed?
+	session_start();
+	$email = $_SESSION['user'];
+
 	if(isset($_SESSION['role'])) {
 		$role = $_SESSION['role'];
 	} else {
 		$role = getRole($email); 
 		$_SESSION['role'] = $role;
 	}
-	
-	// TODO dunno how to do this. Should this be called before a session variable is accessed?
-	session_start();
-	$email = $_SESSION['user'];
 
 	// For content
 	$fullName = getName($email);
@@ -460,5 +460,5 @@ else
 	$res = getOverview();
 
 closeConn($conn);
-return $res;
+echo $res;
 ?>	

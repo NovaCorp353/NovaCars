@@ -42,7 +42,8 @@ function loggedin(){
 			cache: false,
 			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
 			success: function(data){
-				if(data == 1) {					
+				if(data) {	
+					alert(data + " - ");
 					content.html(data);
 				} else {
 					// TODO also log out / end session
