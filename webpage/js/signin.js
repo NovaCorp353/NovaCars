@@ -32,5 +32,23 @@ function loggedin(){
 	$('#signin-err').css('visibility','hidden'); 
 	alert('logged in');
 
-	// TODO
+	window.location.href = 'dashboard.html'; // TODO or probably ../dashboard.html
+	var content = $('#content');
+	
+	// Get Overview
+	$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			cache: false,
+			beforeSend: function(){content.html('<p>Retrieving data...</p>');),
+			success: function(data){
+				if(data == 1) {					
+					content.html(data);
+				} else {
+					// TODO also log out / end session
+					$('#signin-err-lb').text('Unable to retrieve data at this time! Try again later.');
+					$('#signin-err').css('visibility','visible');   
+				}
+			}
+		});
 }
