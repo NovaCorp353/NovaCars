@@ -384,11 +384,11 @@ function getRightPanel($email, $cur_tab){
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
 	        	<li><a href="#" onclick="getContent( \'' . CUST_PROFILE . '\')">Customer Profile</a></li>';
-        }
 
-        $rightPanel .= 
-   		'</div>';
-	    return $rightPanel;
+	        	$rightPanel .= 
+	   		'</div>';
+	   		return $rightPanel;
+        }
 	} else {
 		$rightPanel = 
 		'<div class="container-fluid">
