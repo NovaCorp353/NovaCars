@@ -18,7 +18,6 @@ $(document).ready(function() {
 			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
 			success: function(data){
 				if(data) {	
-					alert(data + " $$$$$$$ ");
 					content.html(data);
 				} else {
 					// TODO also log out / end session
@@ -39,7 +38,6 @@ function getContent(contentType){
  			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
  			success: function(data){
  				if(data) {	
- 					alert(data);
  					content.html(data);
  				} else {
  					// TODO also log out / end session
@@ -60,4 +58,26 @@ function editEmployee(data){
 
 function addEmployee(data){
 	// TODO
+}
+function getCustFiltered(data) {
+	event.preventDefault();
+	var f = $('#filterin').val();
+	var table =  $('#table');
+	if(f != null){
+		$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			data: {filter:f, action:data},
+			cache: false,
+			success: function(result){
+				if(result) {	
+					table.html(result);
+				} else {
+					//todo
+					$('#signin-err-lb').text('Login failed. Check credentials!');
+					$('#signin-err').css('visibility','visible');   
+				}
+			}
+		});
+	} 
 }

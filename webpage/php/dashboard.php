@@ -5,48 +5,102 @@ include('util.php');
 function getCustomerProfile(){
 	// TODO
 
-		// Assign content now
-		// TODO if no vehicles display none
-		// TODO if no history display none
-		// TODO check if configured in session
-		// TODO do sessions (Burcu)
-		// TOOD put this in get customer profile function
+	$rightPanel = getRightPanel($_SESSION["user"], CUST_PROFILE);
+	$header = getCustHeader($_SESSION["user"]);
 
-		$firstName = '';// TODO;
-		$lastName = '';// TODO;
+	$firstName = $header['first_name'];
+	$lastName = $header['last_name'];
+	$membershipStatus = $header['membership_sts'];
+	$bonusPoints = $header['bonus_pts'];
 
-		$membershipStatus = '';// TODO;
-		$bonusPoints = '';// TODO;
-		$autoList = '';// TODO;
-		$history = '';// TODO;
+	$autoList = getCustAutos($_SESSION['user']);
+	$history = getCustHistory($_SESSION['user']);
 
-		$content = 
-		'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<h1 class="page-header">' . $firstName . ' ' . $lastName . '</h1>
-		<h3>' . $membershipStatus . ' Customer</h3>
-		<h4 class="txt-muted">' . $bonusPoints . '  points collected</h4>
+	$content = 
+			'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		    <h1 class="page-header">'.$firstName.' '.$lastName.'</h1>
+		    <h3>'.$membershipStatus.' Customer</h3>
+		    <h4 class="txt-muted">'.$bonusPoints.' points collected</h4>
+		    
+		    <div class="row">
+		     <div class="col-sm-12 col-md-6">
+		      <div class="panel panel-info">
+		       <!-- Default panel contents -->
+		       <div class="panel-heading">Customer profile</div>
 
-		<div class="row">
-			<div class="col-sm-12 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">Customer profile</div>
+		       <!-- List group -->
+		       <ul class="list-group">
+		        <li class="list-group-item"><strong>Email</strong>: '.$_SESSION['user'].'</li>
+		        <li class="list-group-item"><strong>Password</strong>: <button class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Change</button></li>
+		      </ul>
+		    </div>
+		  </div>
+		  
+		  <div class="col-sm-12 col-md-6">
+		    <div class="panel panel-info">
+		     <!-- Default panel contents -->
+		     <div class="panel-heading">Owned vehicles</div>
 
-					<ul class="list-group">
-						<li class="list-group-item"><strong>Email</strong>: ' . $_SESSION['user'] . '</li>
-						<li class="list-group-item"><strong>Password</strong>: <button class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Change</button></li>
-					</ul>
-				</div>
-			</div>
-
-			'. $autoList . '
+		     <!-- List group -->
+		     <ul class="list-group">';
+	if($autoList == NULL)
+    {
+    	$table = "No autos to display";
+    }
+    else
+    {
+    	while($data = $autoList->fetch_assoc())
+    	{
+    		$content .='<li class="list-group-item"><a><span class="glyphicon glyphicon-edit"></span></a><strong> '.$data['model'].' ['.$data['year'].'] '.'</strong>: '.$data['plate'].'</li>';
+    	}
+	}
+	$content .= '</ul>
+		  </div>
+		  <button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
+		</div>
 		</div>
 
 		<h2 class="sub-header">History</h2>
-		' . $history . '
-	</div>';
+		<div class="table-responsive">
+		  <table class="table table-striped">
+		    <thead>
+		      <tr>
+		        <th>ID</th>
+		        <th>Auto</th>
+		        <th>Operation</th>
+		        <th>Price</th>
+		        <th>Date</th>
+		        <th>Points Earned</th>
+		      </tr>
+		    </thead>
+		    <tbody>';
+    if($history == NULL)
+	{
+		$content .= "<tr><td>No history</td></tr>";
+	}
+	else
+	{
+		while($data = $history->fetch_assoc())
+	     {
+	     	$auto = $data['model'].' ['.$data['year'].']';
+	     	$bonus = $data['amount']/10;
+	     	$content .= 
+	     	'<tr>
+	     		<td>'.$data['id'].'</td>
+	     		<td>'.$auto.'</td>
+	     		<td>'.$data['op_name'].'</td>
+	     		<td>'.$data['amount'].'</td>
+	     		<td>'.$data['date'].'</td>
+	     		<td>'.$bonus.'</td>
+	     	</tr>';
+	     }
+	 }
+	$content .= 
+	'	    </tbody>
+		  </table>
+		</div></div></div></div>';
 
-	return $content;
-
+	return $rightPanel.$content;
 }
 
 function getDepartmentInfo(){
@@ -164,11 +218,155 @@ function getDepartmentInfo(){
 	}
 }
 
+function getCustFiltered()
+{
+	$role = $_SESSION['role'];
+	if(strcmp($role, MANAGER) == 0)
+	{
+		$filter = $_POST['filter'];
+		$deptName = getDepartment($_SESSION['user']);
+		$trans = getMgrCustTrans($deptName['dept_name'], $filter);
+		$table = '<div id="table" class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>ID</th>
+	                  <th>Customer</th>
+					  <th>Auto</th>
+	                  <th>Operation</th>
+	                  <th>Technician</th>
+	                  <th>Price</th>
+					  <th>Date</th>
+					  <th>Details</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+	    if($trans == NULL)
+	    {
+	    	$table = "No operation with the filter";
+	    }
+	    else
+	    {
+	    	while($data = $trans->fetch_assoc())
+		     {
+		     	$custName = $data['f_name'].' '.$data['l_name'];
+		     	$techName = $data['first_name'].' '.$data['last_name'];
+		     	$table .= 
+		     	'<tr>
+		     		<td>'.$data['id'].'</td>
+		     		<td>'.$custName.'</td>
+		     		<td>'.$data['model'].'</td>
+		     		<td>'.$data['op_name'].'</td>
+		     		<td>'.$techName.'</td>
+		     		<td>'.$data['amount'].'</td>
+		     		<td>'.$data['date'].'</td>
+		     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+		     	</tr>';
+		     }
+			 $table .= '
+		              </tbody>
+		            </table>
+		          </div>';
+	    }
+	}
+	else if(strcmp($role, CLERK) == 0)
+	{
+		$filter = $_POST['filter'];
+		$trans = getClerkCustTrans($_SESSION['user'], $filter, FALSE);
+		$table = '<div id="table" class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>ID</th>
+	                  <th>Customer</th>
+					  <th>Auto</th>
+	                  <th>Operation</th>
+	                  <th>Price</th>
+					  <th>Date</th>
+					  <th>Details</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+	    if($trans == NULL)
+	    {
+	    	$table = "No operation with the filter";
+	    }
+	    else
+	    {
+	    	while($data = $trans->fetch_assoc())
+		     {
+		     	$custName = $data['first_name'].' '.$data['last_name'];
+		     	$table .= 
+		     	'<tr>
+		     		<td>'.$data['id'].'</td>
+		     		<td>'.$custName.'</td>
+		     		<td>'.$data['model'].'</td>
+		     		<td>'.$data['op_name'].'</td>
+		     		<td>'.$data['amount'].'</td>
+		     		<td>'.$data['date'].'</td>
+		     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+		     	</tr>';
+		     }
+			 $table .= '
+		              </tbody>
+		            </table>
+		          </div>';
+	    }
+	}
+	else if(strcmp($role, TECHNICIAN) == 0)
+	{
+		$filter = $_POST['filter'];
+		$trans = getTechCustTrans($_SESSION['user'], $filter);
+		$table = '<div id="table" class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>ID</th>
+	                  <th>Customer</th>
+					  <th>Auto</th>
+	                  <th>Operation</th>
+	                  <th>Price</th>
+					  <th>Date</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+	    if($trans == NULL)
+	    {
+	    	$table = "No operation with the filter";
+	    }
+	    else
+	    {
+	    	while($data = $trans->fetch_assoc())
+		     {
+		     	$custName = $data['first_name'].' '.$data['last_name'];
+		     	$table .= 
+		     	'<tr>
+		     		<td>'.$data['id'].'</td>
+		     		<td>'.$custName.'</td>
+		     		<td>'.$data['model'].'</td>
+		     		<td>'.$data['op_name'].'</td>
+		     		<td>'.$data['amount'].'</td>
+		     		<td>'.$data['date'].'</td>
+		     	</tr>';
+		     }
+			 $table .= '
+		              </tbody>
+		            </table>
+		          </div>';
+	    }
+	}
+	else
+	{
+		$table = "";
+	}
+	return $table;
+}
+
 function getCustomerTransactions(){
-	// TODO
 
 	$rightPanel = getRightPanel($_SESSION["user"], CUST_TRANSACTIONS);
-	if(isset($_SESSION['role'])) {
+	if(isset($_SESSION['role'])) 
+	{
 		$role = $_SESSION['role'];
 	} else {
 		$role = getRole($email); 
@@ -178,18 +376,16 @@ function getCustomerTransactions(){
 	if(strcmp($role, MANAGER) == 0)
 	{
 		$header = getMgrCustTransHeader($_SESSION["user"]);
-		$deptName = $header['dept_name'];
 		$firstName = $header['first_name'];
 		$lastName = $header['last_name'];
-
+		$deptName = $header['dept_name'];
 		$stats = getMgrCustTransStats($deptName);
 		$noOfTrans = $stats['trans_count'];
 		$revenue = $stats['tot_revenue'];
 		
 		$filter = '';
 		$trans = getMgrCustTrans($deptName, $filter);
-		$content = ' 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		$content = '<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">' . $deptName . '</h1>
 		  <h3 class="text-muted">Manager: '.$firstName .' '.$lastName.'</h3>
 		
@@ -197,18 +393,18 @@ function getCustomerTransactions(){
 			  <div class="panel-heading">Customer Transactions</div>
 			  <ul class="list-group">
 				<li class="list-group-item"><strong>Number of Transactions</strong>: ' . $noOfTrans . '</li>
-				<li class="list-group-item"><strong>Total Revenue</strong>:'.$revenue.'</li>
+				<li class="list-group-item"><strong>Total Revenue</strong>: '.$revenue.'</li>
 			  </ul>
 		</div>
 					
 		<h2 class="sub-header">Customer Transactions</h2>
 		<form class="form-inline" role="form">
 			<div class="form-group">
-				<input type="text" placeholder="Filter by operation name" class="form-control">
-				<button type="submit" onclick="submitQuery(//HOLY SHIT LOOK AT HERE OMG TODO)" class="btn btn-primary">Filter</button>	
+				<input type="text" id="filterin" placeholder="Filter" class="form-control">
+				<button type="submit" id="filter" onclick="getCustFiltered(\'' .FILTER_CUST_TRANS. '\')" class="btn btn-primary">Filter</button>	
 			</div>
 		</form>
-          <div class="table-responsive">
+          <div id="table" class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -224,24 +420,23 @@ function getCustomerTransactions(){
               </thead>
               <tbody>';
 
-	     while($data = $trans->fetch_assoc())
-	     {
-	     	$custName = $data['f_name'].' '.$data['l_name'];
-	     	$techName = $data['first_name'].' '.$data['last_name'];
-	     	$content .= 
-	     	'<tr>
-	     		<td>'.$data['id'].'</td>
-	     		<td>'.$custName.'</td>
-	     		<td>'.$data['model'].'</td>
-	     		<td>'.$data['op_name'].'</td>
-	     		<td>'.$techName.'</td>
-	     		<td>'.$data['amount'].'</td>
-	     		<td>'.$data['date'].'</td>
-	     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
-	     	</tr>';
-	     }
-		 $content .= '
-              </tbody>
+     while($data = $trans->fetch_assoc())
+     {
+     	$custName = $data['f_name'].' '.$data['l_name'];
+     	$techName = $data['first_name'].' '.$data['last_name'];
+     	$content .= 
+     	'<tr>
+     		<td>'.$data['id'].'</td>
+     		<td>'.$custName.'</td>
+     		<td>'.$data['model'].'</td>
+     		<td>'.$data['op_name'].'</td>
+     		<td>'.$techName.'</td>
+     		<td>'.$data['amount'].'</td>
+     		<td>'.$data['date'].'</td>
+     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+     	</tr>';
+     }
+	 $content .= '</tbody>
             </table>
           </div>
 		  <!-- Modal -->
@@ -284,26 +479,192 @@ function getCustomerTransactions(){
 				</div>
 			  </div>
 			</div>
-		  
-        </div>
-      </div>
-    </div>';
-
-    	return $rightPanel . $content;
+        </div></div></div>';
 	}
 	else if(strcmp($role, TECHNICIAN) == 0)
 	{
+		$header = getTechHeader($_SESSION["user"]);
+		$firstName = $header['first_name'];
+		$lastName = $header['last_name'];
+		$stats = getTechCustTransStats($_SESSION["user"]);
+		$noOfTrans = $stats['trans_count'];
+		$revenue = $stats['tot_revenue'];
 
+		$content = 
+		'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Customer Transactions</h1>
+		  <h3 class="text-muted">Technician: '.$firstName.' '.$lastName.'</h3>
+			<div class="panel panel-info" style="width:50%">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">Quick Info</div>
+				  <!-- List group -->
+				  <ul class="list-group">
+					<li class="list-group-item"><strong>Number of Transactions</strong>: '.$noOfTrans.'</li>
+					<li class="list-group-item"><strong>Total Revenue</strong>: '.$revenue.'</li>
+				  </ul>
+			</div>		
+			<h2 class="sub-header">Customer Transactions</h2>
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<input type="text" id="filterin" placeholder="Filter" class="form-control">
+					<button type="submit" id="filter" class="btn btn-primary" onclick="getCustFiltered(\'' .FILTER_CUST_TRANS. '\')">Filter</button>		
+				</div>
+			</form>
+	          <div id="table" class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>ID</th>
+	                  <th>Customer</th>
+					  <th>Auto</th>
+	                  <th>Operaton</th>
+	                  <th>Price</th>
+					  <th>Date</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+
+	    $filter = "";
+	    $trans = getTechCustTrans($_SESSION['user'], $filter);
+		while($data = $trans->fetch_assoc())
+	     {
+	     	$custName = $data['first_name'].' '.$data['last_name'];
+	     	$content .= 
+	     	'<tr>
+	     		<td>'.$data['id'].'</td>
+	     		<td>'.$custName.'</td>
+	     		<td>'.$data['model'].'</td>
+	     		<td>'.$data['op_name'].'</td>
+	     		<td>'.$data['amount'].'</td>
+	     		<td>'.$data['date'].'</td>
+	     	</tr>';
+	     }
+
+	     $content .=
+	     '	     </tbody>
+	            </table>
+	          </div>
+        </div></div></div>';
 	}
 	else if(strcmp($role, CLERK) == 0)
 	{
+		$header = getClerkHeader($_SESSION["user"]);
+		$firstName = $header['first_name'];
+		$lastName = $header['last_name'];
+		$stats = getClerkCustTransStats($_SESSION["user"]);
+		$noOfTrans = $stats['trans_count'];
+		$revenue = $stats['tot_revenue'];
 
+		$content = 
+		'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Customer Transactions</h1>
+		  <h3 class="text-muted">Clerk: '.$firstName.' '.$lastName.'</h3>
+			<div class="panel panel-info" style="width:50%">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">Quick Info</div>
+				  <!-- List group -->
+				  <ul class="list-group">
+					<li class="list-group-item"><strong>Number of Transactions</strong>: '.$noOfTrans.'</li>
+					<li class="list-group-item"><strong>Total Revenue</strong>: '.$revenue.'</li>
+				  </ul>
+			</div>		
+			<h2 class="sub-header">Customer Transactions</h2>
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<input type="text" id="filterin" placeholder="Filter" class="form-control">
+					<button type="submit" id="filter" class="btn btn-primary" onclick="getCustFiltered(\'' .FILTER_CUST_TRANS. '\')">Filter</button>		
+				</div>
+				<form class="form-inline" role="form">
+					<div class="form-group pull-right">
+						<input data-on-text="Only my transactions" data-off-text="All transactions" data-on-color="success" data-off-color="warning" type="checkbox" id="scope_toggle" checked></input>
+					</div>
+				</form>
+			</form>
+	          <div id="table" class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>ID</th>
+	                  <th>Customer</th>
+					  <th>Auto</th>
+	                  <th>Operaton</th>
+	                  <th>Price</th>
+					  <th>Date</th>
+					  <th>Details</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+
+	    $filter = "";
+	    $val = FALSE;
+	    $trans = getClerkCustTrans($_SESSION['user'], $filter, $val);
+		while($data = $trans->fetch_assoc())
+	     {
+	     	$custName = $data['first_name'].' '.$data['last_name'];
+	     	$content .= 
+	     	'<tr>
+	     		<td>'.$data['id'].'</td>
+	     		<td>'.$custName.'</td>
+	     		<td>'.$data['model'].'</td>
+	     		<td>'.$data['op_name'].'</td>
+	     		<td>'.$data['amount'].'</td>
+	     		<td>'.$data['date'].'</td>
+	     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+	     	</tr>';
+	     }
+
+	     $content .=
+	     '	     </tbody>
+	            </table>
+	          </div>
+			  <!-- Modal -->
+				<div id="detailed_info_modal" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Detailed information about transaction #ID</h4>
+						</div>
+						<div class="modal-body">
+							<p><strong>Transaction was completed by: </strong> Clerk name here</p>
+							<p><strong>Total Cost: </strong> XXXX</p>
+							<p><strong>Completed on: </strong> Date here</p>
+							<h3 class="bg-primary">Customer Information</h3>
+							<p><strong>Name:</strong>Name Surname</p>
+							<p><strong>Membership status:</strong>Status here</p>
+							<p><strong>Bonus points:</strong>XXX</p>
+							<h3 class="bg-primary">Vehicle Information</h3>
+							<p><strong>Plate number:</strong>XX XX XX</p>
+							<p><strong>Model:</strong>Model here</p>
+							<p><strong>Year:</strong>XXXX</p>
+							<h3 class="bg-primary">Operations Information</h3>
+							<h4 class="bg-info">Operation Name 1</h4>
+							<p><strong>Department: </strong>Department name here</p>
+							<p><strong>Department Manager: </strong>Department manager name here</p>
+							<p><strong>Operation Cost: </strong>XXXX</p>
+							<p><strong>Operation was performed by: </strong>Technician name here</p>
+							<h4 class="bg-info">Operation Name 2</h4>
+							<p><strong>Department: </strong>Department name here</p>
+							<p><strong>Department Manager: </strong>Department manager name here</p>
+							<p><strong>Operation Cost: </strong>XXXX</p>
+							<p><strong>Operation was performed by: </strong>Technician name here</p>
+						</div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					  </div>
+					</div>
+			  </div>
+			</div>
+        </div></div></div>';
 	}
 	else
 	{
-		//okay
+		$content = "";
 	}
 
+	return $rightPanel . $content;
 }
 
 function getNewTransaction(){
@@ -341,6 +702,7 @@ function getOverview(){
 	    // Assign content now
 		$employee = getEmployee($email);
 		$departmentName = $employee['dept_name'];
+		$_SESSION['dept_name'] = $departmentName;
 		$title = $role . ' in ' . $departmentName;
 		$startYear = $employee['since'];
 		$salary = $employee['salary'];
@@ -394,7 +756,7 @@ function getRightPanel($email, $cur_tab)
 				<div class="row">
 					<div class="col-sm-3 col-md-2 sidebar">
 						<ul class="nav nav-sidebar">
-							<li><a href="#">Overview</a></li>';
+							<li><a href="#" onclick="getContent( \'' . OVERVIEW . '\')">Overview</a></li>';
 
 		if(strcmp($role, MANAGER) == 0){
 
@@ -583,6 +945,8 @@ else if(strcmp($_POST['action'], FILTER_EMPLOYEE) == 0)
 	$res = getEmployeesFiltered();
 else if(strcmp($_POST['action'], NEW_EMPLOYEE) == 0)
 	$res = getNewEmployee();
+else if(strcmp($_POST['action'], FILTER_CUST_TRANS) == 0)
+	$res = getCustFiltered();
 else 
 	$res = getOverview();
 echo $res;
