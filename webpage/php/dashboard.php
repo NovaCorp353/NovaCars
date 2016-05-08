@@ -194,7 +194,7 @@ function getDepartmentInfo(){
 		$nrEmployees = $departmentInfo['cnt_employees']; 
 
 		$operations = getOperations($deptName);
-		$employees = getEmployees($deptName);
+		$employees = getEmployees($deptName, "");
 
 		$content = 
 		'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -232,11 +232,11 @@ function getDepartmentInfo(){
 			<h2 class="sub-header">Employees</h2>
 			<form class="form-inline" role="form">
 				<div class="form-group">
-					<input type="text" placeholder="Filter by name" class="form-control">
-					<button type="submit" onclick="getEmployeesFiltered(\''.FILTER_EMPLOYEE.'\')" class="btn btn-primary">Filter</button>	
+					<input type="text" id = "filterin" placeholder="Filter by name" class="form-control">
+					<button type="submit" id="filter" onclick="getEmployeesFiltered(\''.FILTER_EMPLOYEE.'\')" class="btn btn-primary">Filter</button>	
 				</div>
 			</form>
-	          <div class="table-responsive">
+	          <div id="table"class="table-responsive">
 	            <table class="table table-striped">
 	              <thead>
 	                <tr>
@@ -277,6 +277,51 @@ function getDepartmentInfo(){
 	      </div>';
 	}
 	return $rightPanel . $content; 
+}
+
+function getEmplFiltered()
+{
+	$filter = $_POST['filter'];
+	$deptName = getDepartment($_SESSION['user']);
+	$trans = getEmployees($deptName['dept_name'], $filter);
+	$table = '<div id="table"class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>#</th>
+	                  <th>Name</th>
+	                  <th>Email</th>
+	                  <th>Salary</th>
+	                  <th>Expertise Level</th>
+					  <th>Edit</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+	if($trans == NULL)
+    {
+    	$table .= "<tr><td>No employee with the filter</td><tr>";
+    }
+    else
+    {
+    	$count = 1;
+	    while($data = $trans->fetch_assoc()){
+	    	$table .= '<tr>
+                  <td>'.$count.'</td>
+				  <td>'.$data['first_name'].' '.$data['last_name'].'</td>
+                  <td>'.$data['email'].'</td>
+                  <td>'.$data['salary'].'</td>
+                  <td>'.$data['expertise_lvl'].'</td>
+                  <td><a onclick="editEmployee(\''.$data['email'].'\')"><span class="glyphicon glyphicon-edit"></span></a></td>
+                </tr>';
+            $count++;
+	    }
+		 $table .= '
+	              </tbody>
+	            </table>
+	          </div>';
+    }
+
+    return $table;
 }
 
 function getCustFiltered()
@@ -1021,7 +1066,7 @@ else if(strcmp($_POST['action'], SUPP_INFO) == 0)
 else if(strcmp($_POST['action'], CUST_PROFILE) == 0)
 	$res = getCustomerProfile();
 else if(strcmp($_POST['action'], FILTER_EMPLOYEE) == 0)
-	$res = getEmployeesFiltered();
+	$res = getEmplFiltered();
 else if(strcmp($_POST['action'], NEW_EMPLOYEE) == 0)
 	$res = getNewEmployee();
 else if(strcmp($_POST['action'], FILTER_CUST_TRANS) == 0)

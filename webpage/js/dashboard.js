@@ -48,10 +48,6 @@ function getContent(contentType){
  		});
  }
 
-function getEmployeesFiltered(data){
-	// TODO
-}
-
 function editEmployee(data){
 	// TODO
 }
@@ -59,7 +55,32 @@ function editEmployee(data){
 function addEmployee(data){
 	// TODO
 }
-function getCustFiltered(data) {
+function getCustFiltered(data) 
+{
+	event.preventDefault();
+	var f = $('#filterin').val();
+	var table =  $('#table');
+	if(f != null){
+		$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			data: {filter:f, action:data},
+			cache: false,
+			success: function(result){
+				if(result) {	
+					table.html(result);
+				} else {
+					//todo
+					$('#signin-err-lb').text('Login failed. Check credentials!');
+					$('#signin-err').css('visibility','visible');   
+				}
+			}
+		});
+	} 
+}
+
+function getEmployeesFiltered(data)
+{
 	event.preventDefault();
 	var f = $('#filterin').val();
 	var table =  $('#table');
