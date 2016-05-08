@@ -18,6 +18,7 @@ define("SUPP_TRANSACTIONS", "SupplierTransactions");
 define("NEW_TRANSACTION", "NewTransaction");
 define("SUPP_INFO", "SupplierInfo");
 define("CUST_PROFILE", "CustomerProfile");
+define("FILTER_CUST_TRANS", "FilterCustTrans");
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -111,6 +112,21 @@ function getMgrCustTransStats($dept_name)
 	return 0;
 }
 
+function getDepartment($email)
+{
+	$conn = openConn();
+
+	$query = "SELECT E.dept_name 
+	 FROM Employee E 
+	 WHERE E.email = '$email';";
+
+	 $res = $conn->query($query);
+
+	 if(mysqli_num_rows($res) == 1)
+	 	return $res->fetch_assoc();
+	 return 0;
+}
+
 function getMgrCustTrans($dept_name, $filter)
 {
 	$conn = openConn();
@@ -134,6 +150,6 @@ function getMgrCustTrans($dept_name, $filter)
 	 }
 	 
 	 closeConn($conn);
-	 return 0;
+	 return NULL;
 }
 ?>

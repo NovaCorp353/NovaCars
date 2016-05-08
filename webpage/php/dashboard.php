@@ -53,6 +53,58 @@ function getDepartmentInfo(){
 	// TODO
 }
 
+function getCustFiltered()
+{
+	$filter = $_POST['filter'];
+	$deptName = getDepartment($_SESSION['user']);
+	$trans = getMgrCustTrans($deptName['dept_name'], $filter);
+	$table = '<div id="table" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+				  <th>Auto</th>
+                  <th>Operation</th>
+                  <th>Technician</th>
+                  <th>Price</th>
+				  <th>Date</th>
+				  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>';
+    if($trans == NULL)
+    {
+    	$table = "No operation with the filter";
+    }
+    else
+    {
+    	while($data = $trans->fetch_assoc())
+	     {
+	     	$custName = $data['f_name'].' '.$data['l_name'];
+	     	$techName = $data['first_name'].' '.$data['last_name'];
+	     	$table .= 
+	     	'<tr>
+	     		<td>'.$data['id'].'</td>
+	     		<td>'.$custName.'</td>
+	     		<td>'.$data['model'].'</td>
+	     		<td>'.$data['op_name'].'</td>
+	     		<td>'.$techName.'</td>
+	     		<td>'.$data['amount'].'</td>
+	     		<td>'.$data['date'].'</td>
+	     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+	     	</tr>';
+	     }
+		 $table .= '
+	              </tbody>
+	            </table>
+	          </div>';
+    }
+    
+    return $table;
+
+}
+
 function getCustomerTransactions(){
 	// TODO
 
@@ -67,10 +119,9 @@ function getCustomerTransactions(){
 	if(strcmp($role, MANAGER) == 0)
 	{
 		$header = getMgrCustTransHeader($_SESSION["user"]);
-		$deptName = $header['dept_name'];
 		$firstName = $header['first_name'];
 		$lastName = $header['last_name'];
-
+		$deptName = $header['dept_name'];
 		$stats = getMgrCustTransStats($deptName);
 		$noOfTrans = $stats['trans_count'];
 		$revenue = $stats['tot_revenue'];
@@ -93,11 +144,11 @@ function getCustomerTransactions(){
 		<h2 class="sub-header">Customer Transactions</h2>
 		<form class="form-inline" role="form">
 			<div class="form-group">
-				<input type="text" placeholder="Filter by operation name" class="form-control">
-				<button type="submit" onclick="submitQuery(//HOLY SHIT LOOK AT HERE OMG TODO)" class="btn btn-primary">Filter</button>	
+				<input type="text" id="filterin" placeholder="Filter by operation name" class="form-control">
+				<button type="submit" id="filter" onclick="getCustFiltered(\'' .FILTER_CUST_TRANS. '\')" class="btn btn-primary">Filter</button>	
 			</div>
 		</form>
-          <div class="table-responsive">
+          <div id="table" class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -230,6 +281,7 @@ function getOverview(){
 	    // Assign content now
 		$employee = getEmployee($email);
 		$departmentName = $employee['dept_name'];
+		$_SESSION['dept_name'] = $departmentName;
 		$title = $role . ' in ' . $departmentName;
 		$startYear = $employee['since'];
 		$salary = $employee['salary'];
@@ -468,6 +520,8 @@ else if(strcmp($_POST['action'], SUPP_INFO) == 0)
 	$res = getSupplierInfo();
 else if(strcmp($_POST['action'], CUST_PROFILE) == 0)
 	$res = getCustomerProfile();
+else if(strcmp($_POST['action'], FILTER_CUST_TRANS) == 0)
+	$res = getCustFiltered();
 else 
 	$res = getOverview();
 echo $res;

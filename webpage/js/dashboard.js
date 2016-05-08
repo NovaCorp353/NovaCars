@@ -50,3 +50,25 @@ function getContent(contentType){
  		});
  }
 
+function getCustFiltered(data) {
+	event.preventDefault();
+	var f = $('#filterin').val();
+	var table =  $('#table');
+	if(f != null){
+		$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			data: {filter:f, action:data},
+			cache: false,
+			success: function(result){
+				if(result) {	
+					table.html(result);
+				} else {
+					//todo
+					$('#signin-err-lb').text('Login failed. Check credentials!');
+					$('#signin-err').css('visibility','visible');   
+				}
+			}
+		});
+	} 
+}
