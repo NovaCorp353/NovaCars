@@ -42,7 +42,7 @@ function getName($email){
 
 	$query = 
 	"SELECT first_name, last_name
-	FROM User 
+	FROM User
 	WHERE email = '$email';";
 
 	$res = $conn->query($query);
@@ -60,11 +60,13 @@ function getEmployee($email){
 	$conn = openConn();
 
 	$query = 
-	"SELECT salary, role, expertise_lvl, dept_name, since
+	"SELECT salary, expertise_lvl, dept_name, since
 	FROM Employee 
 	WHERE email = '$email';";
 
-	if($conn->query($query) == TRUE){
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) == 1){
 		closeConn($conn);
 		return $res->fetch_assoc();
 	}
