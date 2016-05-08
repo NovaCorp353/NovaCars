@@ -677,11 +677,6 @@ function getCustomerTransactions(){
 					<input type="text" id="filterin" placeholder="Filter" class="form-control">
 					<button type="submit" id="filter" class="btn btn-primary" onclick="getCustFiltered(\'' .FILTER_CUST_TRANS. '\')">Filter</button>		
 				</div>
-				<form class="form-inline" role="form">
-					<div class="form-group pull-right">
-						<input data-on-text="Only my transactions" data-off-text="All transactions" data-on-color="success" data-off-color="warning" type="checkbox" id="scope_toggle" checked></input>
-					</div>
-				</form>
 			</form>
 	          <div id="table" class="table-responsive">
 	            <table class="table table-striped">

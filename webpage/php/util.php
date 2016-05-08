@@ -354,7 +354,7 @@ function getEmployees($dept_name, $filter){
 	 "SELECT user.email, first_name, last_name, salary, expertise_lvl 
 	 FROM User JOIN Employee ON user.email = employee.email 
 	 WHERE dept_name = '$dept_name' AND (user.email LIKE '%$filter%' OR first_name LIKE '%$filter%' 
-   				OR last_name = '$filter' OR expertise_lvl LIKE '%$filter%');";
+   				OR last_name LIKE '%$filter%' OR expertise_lvl LIKE '%$filter%');";
  
 	$res = $conn->query($query);
 
