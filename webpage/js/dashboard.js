@@ -103,6 +103,54 @@ function getEmployeesFiltered(data)
 	} 
 }
 
+function addTrans(actionName) 
+{
+	event.preventDefault();
+	//alert(actionName + "b@@@@@@"); 
+	var customer = $('#cust_email').val();
+	var auto = $('#auto_plate').val();
+	var rev = $('#revenue').val();
+	var radios = document.getElementsByName('radiop');
+	for (var i = 0, length = radios.length; i < length; i++) {
+	    if (radios[i].checked) {
+	        var oper = radios[i].value;
+	        break;
+	    }
+	}
+	var dropDown = document.getElementById(oper);
+	if(dropDown!=null)
+		var tech = dropDown.options[dropDown.selectedIndex].text;
+		
+	if(customer != null && customer != "" && auto != null && auto != null && rev != null && rev != "" && oper != null && tech != null)
+	{
+		$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			data: {cust_email:customer, auto_plate: auto, revenue: rev, operation: oper, tech_email: tech, action: actionName},
+			cache: false,
+			success: function(data)
+			{
+				if(data == 1) 
+				{	
+					alert("Customer transaction successfully added!");
+					$('#newtrans-err').css('visibility','hidden');
+					window.location.href = 'dashboard.html'; 					
+				} 
+				else 
+				{
+					$('#newtrans-err-lb').text('Transaction is not added. Constraints were not met.');
+					$('#newtrans-err').css('visibility','visible');
+				}
+			}
+		});
+	} 
+	else 
+	{
+		$('#newtrans-err-lb').text('Transaction is not added. Constraints were not met.');
+		$('#newtrans-err').css('visibility','visible');   
+	}
+}
+
 function updatePassword(data){
 	var pass = $('#passField').val();
 	var passwordBox = $('#passwordBox');

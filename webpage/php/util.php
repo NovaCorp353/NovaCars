@@ -21,11 +21,13 @@ define("CUST_PROFILE", "CustomerProfile");
 define("FILTER_EMPLOYEE", "FilterEmployee");
 define("NEW_EMPLOYEE", "NewEmployee");
 define("FILTER_CUST_TRANS", "FilterCustTrans");
+define("ADD_TRANS", "add_trans");
 define("CHANGE_PASSWORD", "ChangePassword");
 define("ADD_AUTO", "AddAuto");
 define("AUTO_LIST", "AutoList");
 define("REMOVE_AUTO", "RemoveAuto");
 define("REPORT_MOST_PURCHASES", "ReportMostPurchases");
+
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -278,7 +280,7 @@ function getTechCustTrans($email, $filter)
    		JOIN Auto A ON A.plate = CO.auto_plate
     	JOIN Transaction T ON T.id = CO.transaction_id
    		WHERE CO.tech_email = '$email' AND (CO.op_name LIKE '%$filter%' OR A.model LIKE '%$filter%' 
-   				OR T.id = '$filter');";
+   				OR T.id = '$filter' OR UC.first_name LIKE '%$filter%' OR UC.last_name LIKE '%$filter%');";
 	
 		
 	 $res = $conn->query($query);
@@ -328,13 +330,11 @@ function getDepartmentDetailed($dept_name){
 	return 0;
 }
 
-function getOperations($dept_name){
+function getOperations(){
 	$conn = openConn();
 	
-	$query = 
-	"SELECT op_name, cost 
-	FROM Operation 
-	WHERE dept_name = '$dept_name'";
+	$query = "SELECT O.dept_name, O.op_name, O.cost, T.tech_email\n"
+    . "FROM Operation O JOIN technicianoperation T ON O.dept_name = T.dept_name AND O.op_name = T.op_name";
  
 	$res = $conn->query($query);
 
@@ -355,7 +355,7 @@ function getEmployees($dept_name, $filter){
 	 "SELECT user.email, first_name, last_name, salary, expertise_lvl 
 	 FROM User JOIN Employee ON user.email = employee.email 
 	 WHERE dept_name = '$dept_name' AND (user.email LIKE '%$filter%' OR first_name LIKE '%$filter%' 
-   				OR last_name = '$filter' OR expertise_lvl LIKE '%$filter%');";
+   				OR last_name LIKE '%$filter%' OR expertise_lvl LIKE '%$filter%');";
  
 	$res = $conn->query($query);
 
@@ -411,6 +411,47 @@ function getCustHistory($email)
 	 
 	 closeConn($conn);
 	 return NULL;
+}
+
+function addNewTransaction($amount, $op_name, $dept_name, $tech_email, $clerk_email, $cust_email, $auto_plate)
+{
+	$conn = openConn();
+
+	$date = date('Y-m-d H:i:s');
+
+	$query = 
+	"INSERT INTO `transaction` (`id`, `amount`, `date`) VALUES (NULL, '$amount', '$date')";
+
+	if($conn->query($query)!=FALSE)
+	{
+		/*$myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+		$txt = $dept_name.$op_name.$tech_email.$clerk_email.$cust_email.$auto_plate.$conn->insert_id;
+		fwrite($myfile, $txt);
+		fclose($myfile);*/
+		
+		$query =
+		"INSERT INTO `customeroperation` (`transaction_id`, `dept_name`, `op_name`, `tech_email`, `clerk_email`, `customer_email`, `auto_plate`) 
+		VALUES ('".$conn->insert_id."', '$dept_name', '$op_name', '$tech_email', '$clerk_email', '$cust_email', '$auto_plate')";
+
+		if($conn->query($query) == FALSE)
+		{
+			$query =
+			"DELETE FROM transaction where id = ".$conn->insert_id.";";
+			$conn->query($query);
+			closeConn($conn);
+			return 0;
+		}
+		else
+		{
+			closeConn($conn);
+			return 1;
+		}
+	}
+	else
+	{
+		closeConn($conn);
+		return 0;
+	}
 }
 
 function changePassword(){

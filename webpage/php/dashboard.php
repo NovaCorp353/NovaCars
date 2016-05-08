@@ -3,9 +3,6 @@ include('util.php');
 
 function getCustomerProfile()
 {
-	// TODO
-	// ADD AUTO
-
 	$rightPanel = getRightPanel($_SESSION["user"], CUST_PROFILE);
 	$header = getCustHeader($_SESSION["user"]);
 
@@ -127,7 +124,7 @@ function getCustomerProfile()
 	                	<label for="addAuto-model">Model</label>
 	                	<input type="text" class="form-control" id = "addAuto-model" placeholder="Enter the car model" required></input>
 
-	                	<label for="addAuto-year">Plate</label>
+	                	<label for="addAuto-year">Year</label>
 	                	<input type="number" min="1970" max="'.date("Y").'" class="form-control" id = "addAuto-year" placeholder="Enter the production year" required></input>
 	                </form>
 	            </div>
@@ -142,7 +139,8 @@ function getCustomerProfile()
 	return $rightPanel.$content;
 }
 
-function getAutoList(){
+function getAutoList()
+{
 	$content = 
 	'<div class="col-sm-12 col-md-6">
 		    <div class="panel panel-info">
@@ -176,7 +174,8 @@ function getAutoList(){
 	return $content;
 }
 
-function getDepartmentInfo(){
+function getDepartmentInfo()
+{
 	// Getting right panel
 	$rightPanel = getRightPanel($_SESSION['user'], DEPARTMENT_INFO);
 
@@ -245,7 +244,6 @@ function getDepartmentInfo(){
 	                  <th>Email</th>
 	                  <th>Salary</th>
 	                  <th>Expertise Level</th>
-					  <th>Edit</th>
 	                </tr>
 	              </thead>
 	              <tbody>';
@@ -258,7 +256,6 @@ function getDepartmentInfo(){
                   <td>'.$data['email'].'</td>
                   <td>'.$data['salary'].'</td>
                   <td>'.$data['expertise_lvl'].'</td>
-                  <td><a onclick="editEmployee(\''.$data['email'].'\')"><span class="glyphicon glyphicon-edit"></span></a></td>
                 </tr>';
             $count++;
 	    }
@@ -680,11 +677,6 @@ function getCustomerTransactions(){
 					<input type="text" id="filterin" placeholder="Filter" class="form-control">
 					<button type="submit" id="filter" class="btn btn-primary" onclick="getCustFiltered(\'' .FILTER_CUST_TRANS. '\')">Filter</button>		
 				</div>
-				<form class="form-inline" role="form">
-					<div class="form-group pull-right">
-						<input data-on-text="Only my transactions" data-off-text="All transactions" data-on-color="success" data-off-color="warning" type="checkbox" id="scope_toggle" checked></input>
-					</div>
-				</form>
 			</form>
 	          <div id="table" class="table-responsive">
 	            <table class="table table-striped">
@@ -773,12 +765,200 @@ function getCustomerTransactions(){
 	return $rightPanel . $content;
 }
 
-function getNewTransaction(){
-	// TODO
+function getNewTransaction()
+{
+	$rightPanel = getRightPanel($_SESSION["user"], NEW_TRANSACTION);
+
+	$content = 
+	'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">New Transaction</h1>
+		<div id="newtrans-err" style="visibility: hidden;" class="col-md-8 col-md-offset-2 alert alert-danger" role="alert">
+	    		<p id="newtrans-err-lb" class="text-center"/>
+	  	</div>
+		<form id="new-cust-trans-form">
+			<div style="width:50%">
+				<div class="form-group">
+					<label for="cust_email">Customer Email</label>
+					<input type="email" class="form-control" id="cust_email" placeholder="Email" required>
+				</div>
+				<div class="form-group">
+					<label for="auto_plate">Vehicle Plate Number</label>
+					<input type="text" class="form-control" id="auto_plate" placeholder="Plate Number" required>
+				</div>
+				<div class="form-group">
+					<label for="revenue">Revenue</label>
+					<input type="number" class="form-control" id="revenue" placeholder="Revenue">
+				</div>
+			<button onclick="addTrans(\''.ADD_TRANS.'\')" class="btn btn-success">Complete Transaction</button>
+			</div>	 
+			<div style="width:100%">
+				<h2 class="sub-header">Select operation</h2>
+				<div class="table-responsive">
+	            	<table class="table table-striped">
+	              		<thead>
+	                		<tr>
+	                  			<th></th>
+	                  			<th>Operation Name</th>
+					  			<th>Providing Department</th>
+	                  			<th>Cost</th>
+					  			<th>Technician</th>
+	                		</tr>
+	              		</thead>
+	              		<tbody>';
+    $ops = getOperations();
+    if($ops != NULL)
+    {
+    	$preO = "null";
+    	$preD = "null";
+    	 while($data = $ops->fetch_assoc())
+    	 {
+    	 	if(strcmp($preO, $data['op_name']) || strcmp($preD, $data['dept_name']))
+            {
+            	if(strcmp($preO, "null"))
+            	{
+            		$content .=
+            		'					</select>
+									</div>';
+            	}
+            	$content .= 
+		    	'			<tr>
+		    	 				<td><input type="radio" name="radiop" value = "'.$data['op_name'].'-'.$data['dept_name'].'"></td>
+	      						<td>'.$data['op_name'].'</td>
+								<td>'.$data['dept_name'].'</td>
+	                			<td>'.$data['cost'].'</td>
+	            				<td class="input-group" style="width:300px">
+									<div class="form-group">
+  										<select class="form-control" id="'.$data['op_name'].'-'.$data['dept_name'].'">  
+											<option>'.$data['tech_email'].'</option>';
+				$preO = $data['op_name'];
+				$preD = $data['dept_name'];
+            }
+            else
+            {
+            	$content .= '				<option>'.$data['tech_email'].'</option>';
+            }
+	    }
+    }
+    $content .= 
+    '         				</tbody>
+            			</table>
+          		</div>
+          	</div>
+        </form>
+    </div></div></div>';
+	return $rightPanel.$content;
 }
 
-function getSupplierTransactions(){
-	// TODO
+function getSupplierTransactions()
+{
+	$rightPanel = getRightPanel($_SESSION["user"], SUPP_TRANSACTIONS);
+
+	$content = 
+	'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Supplier Transactions</h1>
+		  <h3 class="text-muted">Clerk: Name Surname</h3>
+		
+		<div class="panel panel-info" style="width:50%">
+			  <!-- Default panel contents -->
+			  <div class="panel-heading">Quick Info</div>
+
+			  <!-- List group -->
+			  <ul class="list-group">
+				<li class="list-group-item"><strong>Number of Transactions</strong>: XX</li>
+				<li class="list-group-item"><strong>Total Cost</strong>:XXXX</li>
+			  </ul>
+		</div>
+					
+		<h2 class="sub-header">Supplier Transactions</h2>
+		<form class="form-inline" role="form">
+			<div class="form-group">
+				<input type="text" placeholder="Filter by supplier name or square part type" class="form-control">
+				<button type="submit" class="btn btn-primary">Filter</button>	
+				
+			</div>
+		</form>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Supplier name</th>
+				  <th>Spare part type</th>
+                  <th>Spare part model</th>
+				  <th>Spare part count</th>
+                  <th>Price</th>
+				  <th>Date</th>
+				  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+				  <td>Name Surname</td>
+				  <td>Spare Part Type 1</td>
+                  <td>Spare Part Model 1</td>
+				  <td>XX</td>
+                  <td>XXX</td>
+                  <td>Date here</td>
+				  <td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+				  <td>Name Surname</td>
+				  <td>Spare Part Type 2</td>
+                  <td>Spare Part Model 2</td>
+				  <td>XX</td>
+                  <td>XXX</td>
+                  <td>Date here</td>
+				  <td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+				</tr>
+              </tbody>
+            </table>
+          </div>
+		  
+		  		  <!-- Modal -->
+			<div id="detailed_info_modal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Detailed information about transaction #ID</h4>
+					</div>
+					<div class="modal-body">
+						<p><strong>Transaction was completed by: </strong> Sales Manager name here</p>
+						<p><strong>Total Cost: </strong> XXXX</p>
+						<p><strong>Address:</strong>Address here</p>
+						<h3 class="bg-primary">Supplier Information</h3>
+						<p><strong>Name:</strong>Name Surname</p>
+						<p><strong>Phone number:</strong>XX XX XX</p>
+						<p><strong>Address:</strong>Address here</p>
+						<p><strong>Contact person:</strong>Name here</p>
+						<h3 class="bg-primary">Spare Part Information</h3>
+						<h4 class="bg-info">Spare part 1</h4>
+						<p><strong>Type: </strong>Type here</p>
+						<p><strong>Model: </strong>Model name here</p>
+						<p><strong>Count: </strong>XXX</p>
+						<p><strong>Stock quantity: </strong>XXX</p>
+						<h4 class="bg-info">Spare part 2</h4>
+						<p><strong>Type: </strong>Type here</p>
+						<p><strong>Model: </strong>Model name here</p>
+						<p><strong>Count: </strong>XXX</p>
+						<p><strong>Stock quantity: </strong>XXX</p>
+					</div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  
+        </div>
+      </div>
+    </div>';
+
+    return $rightPanel.$content;
 }
 
 function getSupplierInfo(){
@@ -1034,7 +1214,8 @@ function getRightPanel($email, $cur_tab)
 	}
 }
 
-function getRole($email){
+function getRole($email)
+{
 	// Determine the position
 
 	if(!isset($_SESSION['role'])){ // Caching
@@ -1066,7 +1247,8 @@ function getRole($email){
 }
 
 // Determine if the user is a customer
-function isCustomer($email){
+function isCustomer($email)
+{
 
 	if(!isset($_SESSION['isCustomer'])){ // Caching
 		$customer = checkRole($email, CUSTOMER);
@@ -1103,6 +1285,27 @@ function getReportMostPurchased(){
 	return $content;
 }
 
+function addNewTransactionDash()
+{
+	$string = $_POST['operation'];
+	$token = strtok($string, "-");
+	$yo = 0;
+	while ($token !== false)
+	{
+		if($yo === 0)
+		{
+			$op_name = $token;
+			$yo++;
+		}
+		else
+		{
+			$dept_name = $token;
+		}
+		$token = strtok("-");
+	} 
+	$res = addNewTransaction($_POST['revenue'], $op_name, $dept_name, $_POST['tech_email'], $_SESSION['user'], $_POST['cust_email'], $_POST['auto_plate']);
+	return $res;
+}
 // Execution starts here
 session_start();
 
@@ -1118,7 +1321,7 @@ else if(strcmp($_POST['action'], CUST_TRANSACTIONS) == 0)
 else if(strcmp($_POST['action'], SUPP_TRANSACTIONS) == 0)
 	$res = getSupplierTransactions();
 else if(strcmp($_POST['action'], NEW_TRANSACTION) == 0)
-	$res = getNewTrasaction();
+	$res = getNewTransaction();
 else if(strcmp($_POST['action'], SUPP_INFO) == 0)
 	$res = getSupplierInfo();
 else if(strcmp($_POST['action'], CUST_PROFILE) == 0)
@@ -1129,6 +1332,8 @@ else if(strcmp($_POST['action'], NEW_EMPLOYEE) == 0)
 	$res = getNewEmployee();
 else if(strcmp($_POST['action'], FILTER_CUST_TRANS) == 0)
 	$res = getCustFiltered();
+else if(strcmp($_POST['action'], ADD_TRANS) == 0)
+	$res = addNewTransactionDash();
 else if(strcmp($_POST['action'], CHANGE_PASSWORD) == 0)
 	$res = changePassword();
 else if(strcmp($_POST['action'], ADD_AUTO) == 0)
