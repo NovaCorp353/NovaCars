@@ -27,7 +27,8 @@ function checkRole($email, $tablename){
 	FROM $tablename
 	WHERE email = '$email';";
 
-	if($conn->query($query) == TRUE){
+	$res = $conn->query($query);
+	if(mysqli_num_rows($res) == 1){
 		closeConn($conn);
 		return 1;
 	}

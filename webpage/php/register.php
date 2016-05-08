@@ -11,11 +11,15 @@ function registerUser(){
 		$firstname = $_POST["firstname"];
 		$lastname = $_POST["lastname"];
 
-		$query = "INSERT INTO User (email, password, first_name, last_name) VALUES ('$email', '$password', '$firstname', '$lastname');";
+		$query = "INSERT INTO User (email, membership_sts, bonus_pts) VALUES ('$email', 'Classic', '$firstname', '$lastname');";
 		if ($conn->query($query) == TRUE) 
 		{
-			// $_SESSION["user"] = $uname; --> necessary?
-			echo 1;
+			$query = "INSERT INTO Customer (email, password, first_name, last_name) VALUES ('$email', 'Elite', 0);";
+
+			if ($conn->query($query) == TRUE) 
+				echo 1;
+			else
+				echo 0;
 		} else 
 		echo 0;
 	}

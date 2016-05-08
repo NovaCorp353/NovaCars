@@ -12,9 +12,9 @@ $("#register-form").submit(function(event){
 			cache: false,
 			beforeSend: function(){ $("#register-btn").val('Connecting...');},
 			success: function(data){
-				alert(data);
 				if(data == 1) {					
-					registered();
+					$('#register-err').css('visibility','hidden');   
+					window.location.href = 'index.html';
 				} else {
 					$('#register-err-lb').text('This email is already registered!');
 					$('#register-err').css('visibility','visible');   
@@ -26,8 +26,3 @@ $("#register-form").submit(function(event){
 		$('#register-err').css('visibility','visible');   
 	}
 });
-
-function registered(){
-	$('#register-err').css('visibility','hidden');   
-	alert("registered");
-}

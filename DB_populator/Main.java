@@ -338,6 +338,7 @@ public class Main {
             statement.executeUpdate("INSERT INTO Customer VALUES ('asild@novacorp.me','Classic',0);");
             statement.executeUpdate("INSERT INTO Customer VALUES ('sahink@novacorp.me','Elite+',2000);");
             statement.executeUpdate("INSERT INTO Customer VALUES ('berkcang@gmail.com','Elite+',1500);");
+	    statement.executeUpdate("INSERT INTO Customer VALUES ('yasemind@novacorp.me','Elite',20);");
 
 
             //Filling Auto Table

@@ -413,16 +413,19 @@ function getRole($email){
 	if(!isset($_SESSION['role'])){ // Caching
 
 		// Determine if user is manager
-		if(checkRole($email, MANAGER))
+		if(checkRole($email, MANAGER)){
 			$_SESSION['role'] = MANAGER;
+		}
 
 		// Determine if user is technician
-		else if(checkRole($email, TECHNICIAN))
+		else if(checkRole($email, TECHNICIAN)){
 			$_SESSION['role'] = TECHNICIAN;
+		}
 
 		// Determine if user is clerk
-		else if(checkRole($email, CLERK))
+		else if(checkRole($email, CLERK)){
 			$_SESSION['role'] = CLERK;
+		}
 
 		// Determine if user is sales manager
 		else if(checkRole($email, SALES_MANAGER))
