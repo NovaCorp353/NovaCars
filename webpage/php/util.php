@@ -525,4 +525,29 @@ function getCustomersWithMostExpensivePurchases($startYear, $endYear){
 	 closeConn($conn);
 	 return null;
 }
+
+function getTechnicianWithMostTransactions(){
+	$conn = openConn();
+
+	$query = 
+	'SELECT U.first_name, U.last_name FROM technician T, User U WHERE T.email = U.email 
+			AND T.email IN 
+            (SELECT CT.email FROM 
+            	(SELECT T.email, COUNT(CO.transaction_id) AS count 
+                 FROM Technician T JOIN CustomerOperation CO ON T.email = CO.tech_email
+    			 GROUP BY T.email) CT 
+      			 WHERE CT.count >= ALL(SELECT CT2.count FROM 
+                                            (SELECT T.email, COUNT(CO.transaction_id) AS count 
+                                             FROM Technician T JOIN CustomerOperation CO ON T.email = CO.tech_email
+                                             GROUP BY T.email) CT2)
+            )';
+
+    $res = $conn->query($query);
+	if(mysqli_num_rows($res) > 0){
+	 	return $res;
+	}
+	 
+	 closeConn($conn);
+	 return null;
+}
 ?>

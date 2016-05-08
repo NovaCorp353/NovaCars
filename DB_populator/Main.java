@@ -5,8 +5,7 @@ import java.util.logging.Logger;
 public class Main {
 
     public static void main(String[] args) {
-
-
+        
         // TODO TO BE CHANGED
         final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         final String URL = "jdbc:mysql://localhost/project";
@@ -326,27 +325,27 @@ public class Main {
             statement.executeUpdate("INSERT INTO User VALUES ('lionelm@yahoo.com','fcb10','Lionel','Messi');");
             statement.executeUpdate("INSERT INTO User VALUES ('asild@novacorp.me','fish','Asil','Doganci');");
 
-            statement.executeUpdate("INSERT INTO User VALUES ('arifu@bilkent.com','cs353','Arif','Usta');");
-            statement.executeUpdate("INSERT INTO User VALUES ('ozguru@bilkent.com','teach','Ozgur','Ulusoy');");
+            statement.executeUpdate("INSERT INTO User VALUES ('ahmety@bilkent.com','cs353','Ahmet','Yilmaz');");
+            statement.executeUpdate("INSERT INTO User VALUES ('ozgury@bilkent.com','teach','Ozgur','Yildirim');");
             statement.executeUpdate("INSERT INTO User VALUES ('sahink@novacorp.me','ferrari','Sahin','Kuranel');");
             statement.executeUpdate("INSERT INTO User VALUES ('berkcang@gmail.com','dedeler','Berkcan','Gurel');");
 
 
             //Filling Customer Table
-            statement.executeUpdate("INSERT INTO Customer VALUES ('arifu@bilkent.com','Elite',1000);");
-            statement.executeUpdate("INSERT INTO Customer VALUES ('ozguru@bilkent.com','Elite',500);");
+            statement.executeUpdate("INSERT INTO Customer VALUES ('ahmety@bilkent.com','Elite',1000);");
+            statement.executeUpdate("INSERT INTO Customer VALUES ('ozgury@bilkent.com','Elite',500);");
             statement.executeUpdate("INSERT INTO Customer VALUES ('asild@novacorp.me','Classic',0);");
             statement.executeUpdate("INSERT INTO Customer VALUES ('sahink@novacorp.me','Elite+',2000);");
             statement.executeUpdate("INSERT INTO Customer VALUES ('berkcang@gmail.com','Elite+',1500);");
-	    statement.executeUpdate("INSERT INTO Customer VALUES ('yasemind@novacorp.me','Elite',20);");
+	        statement.executeUpdate("INSERT INTO Customer VALUES ('yasemind@novacorp.me','Elite',20);");
 
 
             //Filling Auto Table
-            statement.executeUpdate("INSERT INTO Auto VALUES ('06 CS 2012','Mercedes E250',2012,'arifu@bilkent.com');");
-            statement.executeUpdate("INSERT INTO Auto VALUES ('06 DB 2016','BMW 525',2012,'ozguru@bilkent.com');");
-            statement.executeUpdate("INSERT INTO Auto VALUES ('06 AVD 07','Opel Astra',2015,'asild@novacorp.me');");
-            statement.executeUpdate("INSERT INTO Auto VALUES ('06 GNR 95','BMW 320',2009,'sahink@novacorp.me');");
-            statement.executeUpdate("INSERT INTO Auto VALUES ('06 GG 2016','VW Polo',2013,'berkcang@gmail.com');");
+            statement.executeUpdate("INSERT INTO Auto VALUES ('06 CS 2012','Nova Velox',2012,'ahmety@bilkent.com');");
+            statement.executeUpdate("INSERT INTO Auto VALUES ('06 DB 2016','Nova Lux',2012,'ozgury@bilkent.com');");
+            statement.executeUpdate("INSERT INTO Auto VALUES ('06 AVD 07','Nova Nox',2015,'asild@novacorp.me');");
+            statement.executeUpdate("INSERT INTO Auto VALUES ('06 GNR 95','Nova Urbs',2009,'sahink@novacorp.me');");
+            statement.executeUpdate("INSERT INTO Auto VALUES ('06 GG 2016','Nova Invidia',2013,'berkcang@gmail.com');");
 
 
             //Filling Department Table
@@ -399,61 +398,61 @@ public class Main {
 
 
             //Filling SparePart Table
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','Opel',100,50);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','BMW',300,150);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','VW',100,60);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','Mercedes',200,160);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','Opel',300,200);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','BMW',500,250);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','VW',500,250);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','Mercedes',600,300);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','Opel',200,250);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','BMW',400,350);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','VW',200,260);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','Mercedes',100,300);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','Opel',200,1250);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','BMW',400,1350);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','VW',200,1260);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','Mercedes',100,1300);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','Opel',200,80);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','BMW',400,120);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','VW',200,70);");
-            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','Mercedes',100,130);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','Venatrix',100,50);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','Caelo',300,150);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','Venator',100,60);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Air Filter','Rex',200,160);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','Venatrix',300,200);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','Caelo',500,250);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','Venator',500,250);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Oil Filter','Rex',600,300);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','Venatrix',200,250);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','Caelo',400,350);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','Venator',200,260);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Spark Plug','Rex',100,300);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','Venatrix',200,1250);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','Caelo',400,1350);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','Venator',200,1260);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Battery','Rex',100,1300);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','Venatrix',200,80);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','Caelo',400,120);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','Venator',200,70);");
+            statement.executeUpdate("INSERT INTO SparePart VALUES ('Wiper','Rex',100,130);");
 
 
             //Filling Supply Table
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','Opel','Cakmaklar BMC');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','BMW','Cakmaklar BMC');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','Opel','Cakmaklar BMC');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','BMW','Cakmaklar BMC');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','Opel','Evrenler Oto');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','BMW','Evrenler Oto');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Air Filter','Opel','Evrenler Oto');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','BMW','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','Opel','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','BMW','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','Opel','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','BMW','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','BMW','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Opel','Cakmaklar BMC');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Mercedes','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Mercedes','Cakmaklar BMC');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','VW','Oto Fatih');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Air Filter','VW','Evrenler Oto');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','VW','Evrenler Oto');");
-            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','VW','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','Venatrix','Cakmaklar BMC');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','Caelo','Cakmaklar BMC');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','Venatrix','Cakmaklar BMC');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','Caelo','Cakmaklar BMC');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','Venatrix','Evrenler Oto');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','Caelo','Evrenler Oto');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Air Filter','Venatrix','Evrenler Oto');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','Caelo','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','Venatrix','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Wiper','Caelo','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','Venatrix','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Battery','Caelo','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Caelo','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Venatrix','Cakmaklar BMC');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Rex','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Rex','Cakmaklar BMC');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Spark Plug','Venator','Oto Fatih');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Air Filter','Venator','Evrenler Oto');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','Venator','Evrenler Oto');");
+            statement.executeUpdate("INSERT INTO Supply VALUES ('Oil Filter','Venator','Oto Fatih');");
 
 
             //Filling Operation Table
             statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Washing',50, NULL, NULL);");
             statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Lights',200, NULL, NULL);");
-            statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Electronic',1500, 'Battery', 'Opel');");
-            statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Windshield',1200, 'Wiper', 'Opel');");
+            statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Electronic',1500, 'Battery', 'Venatrix');");
+            statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Windshield',1200, 'Wiper', 'Venatrix');");
             statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Engine',4000, NULL, NULL);");
             statement.executeUpdate("INSERT INTO Operation VALUES ('Maintenance','Tires',300, NULL, NULL);");
             statement.executeUpdate("INSERT INTO Operation VALUES ('Repair','Lights',500, NULL, NULL);");
-            statement.executeUpdate("INSERT INTO Operation VALUES ('Repair','Electronic',3500, 'Battery', 'BMW');");
-            statement.executeUpdate("INSERT INTO Operation VALUES ('Repair','Windshield',2200, 'Wiper', 'BMW');");
+            statement.executeUpdate("INSERT INTO Operation VALUES ('Repair','Electronic',3500, 'Battery', 'Caelo');");
+            statement.executeUpdate("INSERT INTO Operation VALUES ('Repair','Windshield',2200, 'Wiper', 'Caelo');");
             statement.executeUpdate("INSERT INTO Operation VALUES ('Repair','Engine',6000, NULL, NULL);");
             statement.executeUpdate("INSERT INTO Operation VALUES ('Repair','Tires',1300, NULL, NULL);");
 
@@ -482,17 +481,17 @@ public class Main {
 
 
             //Filling SparePartOrder Table (trans-id - sales_mgr_email - part_type - part_model - supplier name - count)
-            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (1,'besteekmekci@yahoo.com','Oil Filter','Opel','Oto Fatih',10);");
-            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (2,'besteekmekci@yahoo.com','Battery','BMW','Cakmaklar BMC',5);");
-            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (3,'besteekmekci@yahoo.com','Spark Plug','Mercedes','Oto Fatih',20);");
-            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (4,'besteekmekci@yahoo.com','Wiper','BMW','Evrenler Oto',12);");
+            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (1,'besteekmekci@yahoo.com','Oil Filter','Venatrix','Oto Fatih',10);");
+            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (2,'besteekmekci@yahoo.com','Battery','Caelo','Cakmaklar BMC',5);");
+            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (3,'besteekmekci@yahoo.com','Spark Plug','Rex','Oto Fatih',20);");
+            statement.executeUpdate("INSERT INTO SparePartOrder VALUES (4,'besteekmekci@yahoo.com','Wiper','Caelo','Evrenler Oto',12);");
 
 
             //Filling CustomerOperation (transaction_id, dept_name, op_name, tech_email, clerk_email, customer_email, auto?_plate)
             statement.executeUpdate("INSERT INTO CustomerOperation VALUES (5,'Repair','Windshield','onatkutd@novacorp.me','anik@novacorp.me','berkcang@gmail.com','06 GG 2016');");
             statement.executeUpdate("INSERT INTO CustomerOperation VALUES (6,'Repair','Tires','onatkutd@novacorp.me','anik@novacorp.me','sahink@novacorp.me','06 GNR 95');");
-            statement.executeUpdate("INSERT INTO CustomerOperation VALUES (7,'Maintenance','Lights','yasemind@novacorp.me','anik@novacorp.me','arifu@bilkent.com','06 CS 2012');");
-            statement.executeUpdate("INSERT INTO CustomerOperation VALUES (8,'Maintenance','Washing','yasemind@novacorp.me','anik@novacorp.me','ozguru@bilkent.com','06 DB 2016');");
+            statement.executeUpdate("INSERT INTO CustomerOperation VALUES (7,'Maintenance','Lights','yasemind@novacorp.me','anik@novacorp.me','ahmety@bilkent.com','06 CS 2012');");
+            statement.executeUpdate("INSERT INTO CustomerOperation VALUES (8,'Maintenance','Washing','yasemind@novacorp.me','anik@novacorp.me','ozgury@bilkent.com','06 DB 2016');");
             statement.executeUpdate("INSERT INTO CustomerOperation VALUES (9,'Repair','Engine','mehmett@novacorp.me','anik@novacorp.me','asild@novacorp.me','06 AVD 07');");
 
             // TODO add trigger

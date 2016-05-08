@@ -67,7 +67,7 @@ function getCustomerProfile()
 		while($data = $history->fetch_assoc())
 	     {
 	     	$auto = $data['model'].' ['.$data['year'].']';
-	     	$bonus = $data['amount']/10;
+	     	$bonus = $data['amount']/100;
 	     	$content .= 
 	     	'<tr>
 	     		<td>'.$data['id'].'</td>
@@ -263,12 +263,6 @@ function getDepartmentInfo()
 	    $content .= '</tbody>
 	            </table>
 	          </div>
-
-			<form class="form">
-				  <button type="button" class="btn btn-success" onclick="addEmployee(\''.NEW_EMPLOYEE.'\')">
-				  <span class="glyphicon glyphicon-plus"></span> New employee
-				</button>
-			</form> 
 			
 	        </div>
 	      </div>';
@@ -290,7 +284,6 @@ function getEmplFiltered()
 	                  <th>Email</th>
 	                  <th>Salary</th>
 	                  <th>Expertise Level</th>
-					  <th>Edit</th>
 	                </tr>
 	              </thead>
 	              <tbody>';
@@ -308,7 +301,6 @@ function getEmplFiltered()
                   <td>'.$data['email'].'</td>
                   <td>'.$data['salary'].'</td>
                   <td>'.$data['expertise_lvl'].'</td>
-                  <td><a onclick="editEmployee(\''.$data['email'].'\')"><span class="glyphicon glyphicon-edit"></span></a></td>
                 </tr>';
             $count++;
 	    }
@@ -340,7 +332,6 @@ function getCustFiltered()
 	                  <th>Technician</th>
 	                  <th>Price</th>
 					  <th>Date</th>
-					  <th>Details</th>
 	                </tr>
 	              </thead>
 	              <tbody>';
@@ -363,7 +354,6 @@ function getCustFiltered()
 		     		<td>'.$techName.'</td>
 		     		<td>'.$data['amount'].'</td>
 		     		<td>'.$data['date'].'</td>
-		     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
 		     	</tr>';
 		     }
 			 $table .= '
@@ -386,7 +376,6 @@ function getCustFiltered()
 	                  <th>Operation</th>
 	                  <th>Price</th>
 					  <th>Date</th>
-					  <th>Details</th>
 	                </tr>
 	              </thead>
 	              <tbody>';
@@ -407,7 +396,6 @@ function getCustFiltered()
 		     		<td>'.$data['op_name'].'</td>
 		     		<td>'.$data['amount'].'</td>
 		     		<td>'.$data['date'].'</td>
-		     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
 		     	</tr>';
 		     }
 			 $table .= '
@@ -518,7 +506,6 @@ function getCustomerTransactions(){
                   <th>Technician</th>
                   <th>Price</th>
 				  <th>Date</th>
-				  <th>Details</th>
                 </tr>
               </thead>
               <tbody>';
@@ -536,7 +523,6 @@ function getCustomerTransactions(){
      		<td>'.$techName.'</td>
      		<td>'.$data['amount'].'</td>
      		<td>'.$data['date'].'</td>
-     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
      	</tr>';
      }
 	 $content .= '</tbody>
@@ -688,7 +674,6 @@ function getCustomerTransactions(){
 	                  <th>Operaton</th>
 	                  <th>Price</th>
 					  <th>Date</th>
-					  <th>Details</th>
 	                </tr>
 	              </thead>
 	              <tbody>';
@@ -707,7 +692,6 @@ function getCustomerTransactions(){
 	     		<td>'.$data['op_name'].'</td>
 	     		<td>'.$data['amount'].'</td>
 	     		<td>'.$data['date'].'</td>
-	     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
 	     	</tr>';
 	     }
 
@@ -1041,6 +1025,20 @@ function getOverview(){
 
 			$content .= '</ul>
 					</div>';
+
+
+			$techniciansWhoPerformedMostTransactions = getTechnicianWithMostTransactions();
+			$content .= '
+			<div class="panel panel-default">
+			<div class="panel-heading">Technicians who performed the most transactions</div> 		
+			<ul class="list-group">';
+
+			while($row = $techniciansWhoPerformedMostTransactions->fetch_assoc()){
+			    $content .= '<li class="list-group-item">'.$row['first_name'].' '.$row['last_name'].'</li>';
+			}
+
+			$content .= '</ul>
+				</div>';
 		}
 
 
@@ -1343,7 +1341,7 @@ else if(strcmp($_POST['action'], AUTO_LIST) == 0)
 else if(strcmp($_POST['action'], REMOVE_AUTO) == 0)
 	$res = removeAuto();
 else if(strcmp($_POST['action'], REPORT_MOST_PURCHASES) == 0)
-	$res = getReportMostPurchased(); 
+	$res = getReportMostPurchased();
 else 
 	$res = getOverview();
 echo $res;
