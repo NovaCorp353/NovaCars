@@ -251,6 +251,7 @@ function getOverview(){
 				<li class="list-group-item"><strong>Expertise Level</strong>: ' . $expertise . '</li>
 			</ul>
 		</div>
+	</div>
 	</div>';
 
 		$rightPanel = getRightPanel($email, OVERVIEW);
@@ -374,6 +375,9 @@ function getRightPanel($email, $cur_tab){
 	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
         }
 
+        $rightPanel .= 
+        '</ul>';
+
         if($isCustomer){
 
         	if( strcmp($cur_tab, CUST_PROFILE))
@@ -387,8 +391,7 @@ function getRightPanel($email, $cur_tab){
         }
 
         $rightPanel .= 
-        '</ul>
-   		</div>';
+   		'</div>';
 	    return $rightPanel;
 	} else {
 		$rightPanel = 

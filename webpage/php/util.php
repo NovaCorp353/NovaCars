@@ -95,7 +95,7 @@ function getMgrCustTransStats($dept_name)
 	$query = 
 	"SELECT COUNT(transaction_id) as trans_count, SUM(amount) as tot_revenue
 		FROM transaction NATURAL JOIN CustomerOperation
-		WHERE dept_name = '$dept_name';"
+		WHERE dept_name = '$dept_name';";
 
 	$res = $conn->query($query);
 
