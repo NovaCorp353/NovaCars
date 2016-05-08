@@ -27,7 +27,9 @@ function checkRole($email, $tablename){
 	FROM $tablename
 	WHERE email = '$email';";
 
-	if($conn->query($query) == TRUE){
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) == 1){
 		closeConn($conn);
 		return 1;
 	}
@@ -63,7 +65,9 @@ function getEmployee($email){
 	FROM Employee 
 	WHERE email = '$email';";
 
-	if($conn->query($query) == TRUE){
+	$res = $conn->query($query);
+	
+	if(mysqli_num_rows($res) == 1){
 		closeConn($conn);
 		return $res->fetch_assoc();
 	}
@@ -95,7 +99,7 @@ function getMgrCustTransStats($dept_name)
 	$query = 
 	"SELECT COUNT(transaction_id) as trans_count, SUM(amount) as tot_revenue
 		FROM transaction NATURAL JOIN CustomerOperation
-		WHERE dept_name = '$dept_name';"
+		WHERE dept_name = '$dept_name';";
 
 	$res = $conn->query($query);
 
