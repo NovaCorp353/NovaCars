@@ -17,7 +17,6 @@ $(document).ready(function() {
 			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
 			success: function(data){
 				if(data) {	
-					alert(data + " $$$$$$$ ");
 					content.html(data);
 				} else {
 					// TODO also log out / end session
@@ -38,7 +37,7 @@ function getContent(contentType){
 			beforeSend: function(){content.html('<p>Retrieving data...</p>');},
 			success: function(data){
 				if(data) {	
-					alert(data + " $$$$$$$ ");
+					alert(data);
 					content.html(data);
 				} else {
 					// TODO also log out / end session

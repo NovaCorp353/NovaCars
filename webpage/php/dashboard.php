@@ -54,6 +54,9 @@ function getDepartmentInfo(){
 }
 
 function getCustomerTransactions(){
+
+
+	echo '<pre> Came here to Cutomer Transaction function</pre>';
 	// TODO
 
 	$rightPanel = getRightPanel($_SESSION["user"], CUST_TRANSACTIONS);
@@ -271,13 +274,14 @@ function getRightPanel($email, $cur_tab){
 	if($employee){	
 
 		// Assign right panel content
-		if(strcmp($cur_tab, OVERVIEW))
+		if(strcmp($cur_tab, OVERVIEW)){
 			$rightPanel = 
 			'<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-3 col-md-2 sidebar">
 						<ul class="nav nav-sidebar">
 							<li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>';
+		}		
 		else
 			$rightPanel = 
 			'<div class="container-fluid">
@@ -451,24 +455,31 @@ function isCustomer($email){
 
 // Execution starts here
 session_start();
-
 // Check what action is required
-if(!isset($_POST['action']))
+if(!isset($_POST['action'])){
 	$res = getOverview();
-else if(strcmp($_POST['action'], OVERVIEW))
+}
+else if(strcmp($_POST['action'], OVERVIEW) == 0){
 	$res = getOverview();
-else if(strcmp($_POST['action'], DEPARTMENT_INFO))
+}
+else if(strcmp($_POST['action'], DEPARTMENT_INFO) == 0){
 	$res = getDepartmentInfo();
-else if(strcmp($_POST['action'], CUST_TRANSACTIONS))
+}
+else if(strcmp($_POST['action'], CUST_TRANSACTIONS) == 0){
 	$res = getCustomerTransactions();
-else if(strcmp($_POST['action'], SUPP_TRANSACTIONS))
+}
+else if(strcmp($_POST['action'], SUPP_TRANSACTIONS) == 0){
 	$res = getSupplierTransactions();
-else if(strcmp($_POST['action'], NEW_TRANSACTION))
+}
+else if(strcmp($_POST['action'], NEW_TRANSACTION) == 0){
 	$res = getNewTrasaction();
-else if(strcmp($_POST['action'], SUPP_INFO))
+}
+else if(strcmp($_POST['action'], SUPP_INFO) == 0){
 	$res = getSupplierInfo();
-else if(strcmp($_POST['action'], CUST_PROFILE))
+}
+else if(strcmp($_POST['action'], CUST_PROFILE) == 0){
 	$res = getCustomerProfile();
+}
 else 
 	$res = getOverview();
 echo $res;

@@ -12,7 +12,8 @@ $("#register-form").submit(function(event){
 			cache: false,
 			beforeSend: function(){ $("#register-btn").val('Connecting...');},
 			success: function(data){
-				if(data == 1) {					
+				if(data == 1) {			
+					alert('Success!');		
 					$('#register-err').css('visibility','hidden');   
 					window.location.href = 'index.html';
 				} else {
