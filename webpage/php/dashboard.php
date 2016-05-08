@@ -64,8 +64,9 @@ function getCustomerTransactions(){
 		$_SESSION['role'] = $role;
 	}
 
-	if(strcmp($role, MANAGER))
+	if(strcmp($role, MANAGER) == 0)
 	{
+		echo "<pre>here<pre>";
 		$header = getMgrCustTransHeader($_SESSION["user"]);
 		$deptName = $header['dept_name'];
 		$firstName = $header['first_name'];
@@ -76,7 +77,7 @@ function getCustomerTransactions(){
 		$revenue = $stats['tot_revenue'];
 		
 		$filter = '';
-		$allTransactions = getMgrCustTrans($deptName, $filter);
+		$trans = getMgrCustTrans($deptName, $filter);
 		$content = ' 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">' . $deptName . '</h1>
@@ -104,8 +105,8 @@ function getCustomerTransactions(){
                   <th>ID</th>
                   <th>Customer</th>
 				  <th>Auto</th>
-                  <th>Operatons</th>
-                  <th>Clerk</th>
+                  <th>Operation</th>
+                  <th>Technician</th>
                   <th>Price</th>
 				  <th>Date</th>
 				  <th>Details</th>
@@ -113,27 +114,18 @@ function getCustomerTransactions(){
               </thead>
               <tbody>';
 
-             	 // DO LOOP HERE TODO
-     //            <tr>
-     //              <td>1</td>
-				 //  <td>Name Surname</td>
-				 //  <td>Auto Type 1</td>
-     //              <td>
-					// <p>Operaton Name 1</p>
-					// <p>Operation Name 2</p>
-				 //  </td>
-     //              <td>Name Surname</td>
-     //              <td>XXX</td>
-     //              <td>Date here</td>
-				 //  <td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
-     //            </tr>
-
-
-				$content .= '
+     while($data = $trans->fetch_assoc())
+     {
+     	$custName = $data['f_name'].' '.$data['l_name'];
+     	$techName = $data['first_name'].' '.$data['last_name'];
+     	$content .= '<tr><td>'.$data['id'].'</td><td>'.$custName.'</td><td>'.$data['model']
+     				.'</td><td>'.$data['op_name'].'</td><td>'.$techName.'</td><td>'
+     				.$data['amount'].'</td><td>'.$data['date'].'</td><td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td></tr>';
+     }
+	 $content .= '
               </tbody>
             </table>
           </div>
-		  
 		  <!-- Modal -->
 			<div id="detailed_info_modal" class="modal fade" role="dialog">
 			  <div class="modal-dialog">
@@ -181,11 +173,11 @@ function getCustomerTransactions(){
 
     	return $rightPanel . $content;
 	}
-	else if(strcmp($role, TECHNICIAN))
+	else if(strcmp($role, TECHNICIAN) == 0)
 	{
 
 	}
-	else if(strcmp($role, CLERK))
+	else if(strcmp($role, CLERK) == 0)
 	{
 
 	}
@@ -271,7 +263,7 @@ function getRightPanel($email, $cur_tab){
 	if($employee){	
 
 		// Assign right panel content
-		if(strcmp($cur_tab, OVERVIEW))
+		if(strcmp($cur_tab, OVERVIEW) == 0)
 			$rightPanel = 
 			'<div class="container-fluid">
 				<div class="row">
@@ -286,14 +278,14 @@ function getRightPanel($email, $cur_tab){
 						<ul class="nav nav-sidebar">
 							<li><a href="#">Overview</a></li>';
 
-		if(strcmp($role, MANAGER)){
+		if(strcmp($role, MANAGER) == 0){
 
-			if(strcmp($cur_tab, DEPARTMENT_INFO))
+			if(strcmp($cur_tab, DEPARTMENT_INFO) == 0)
 				$rightPanel .= 
 				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info <span class="sr-only">(current)</span></a></li> 
 				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 				
-			else if(strcmp($cur_tab, CUST_TRANSACTIONS))
+			else if(strcmp($cur_tab, CUST_TRANSACTIONS) == 0)
 				$rightPanel .= 
 				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li> 
 				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions <span class="sr-only">(current)</span></a></li>';
@@ -304,14 +296,14 @@ function getRightPanel($email, $cur_tab){
 				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 		}
 
-		else if(strcmp($role, TECHNICIAN)){
+		else if(strcmp($role, TECHNICIAN) == 0){
 
-			if(strcmp($cur_tab, DEPARTMENT_INFO))
+			if(strcmp($cur_tab, DEPARTMENT_INFO) == 0)
 				$rightPanel .= 
 				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info <span class="sr-only">(current)</span></a></li>
 				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 				
-			else if(strcmp($cur_tab, CUST_TRANSACTIONS))
+			else if(strcmp($cur_tab, CUST_TRANSACTIONS) == 0)
 				$rightPanel .= 
 				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li>
 				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions <span class="sr-only">(current)</span></a></li>';
@@ -322,21 +314,21 @@ function getRightPanel($email, $cur_tab){
 				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 		}
 
-		else if(strcmp($role, CLERK)){
+		else if(strcmp($role, CLERK) == 0){
 
-			if(strcmp($cur_tab, CUST_TRANSACTIONS))
+			if(strcmp($cur_tab, CUST_TRANSACTIONS) == 0)
 				$rightPanel .= 
 				'<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions <span class="sr-only">(current)</span></a></li>
 				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
 	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
 				
-			else if(strcmp($cur_tab, SUPP_TRANSACTIONS))
+			else if(strcmp($cur_tab, SUPP_TRANSACTIONS) == 0)
 				$rightPanel .= 
 				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
 				<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
 	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
 
-			else if(strcmp($cur_tab, NEW_TRANSACTION))
+			else if(strcmp($cur_tab, NEW_TRANSACTION) == 0)
 				$rightPanel .= 
 				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
 				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
@@ -349,21 +341,21 @@ function getRightPanel($email, $cur_tab){
 	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
         }
 
-        else if(strcmp($role, SALES_MANAGER)){
+        else if(strcmp($role, SALES_MANAGER) == 0){
 
-        	if(strcmp($cur_tab, SUPP_TRANSACTIONS))
+        	if(strcmp($cur_tab, SUPP_TRANSACTIONS) == 0)
 				$rightPanel .= 
 				'<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
 	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
 	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
 				
-			else if(strcmp($cur_tab, NEW_TRANSACTION))
+			else if(strcmp($cur_tab, NEW_TRANSACTION) == 0)
 				$rightPanel .= 
 				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
 	        	<li class="active"><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction <span class="sr-only">(current)</span></a></li>
 	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
 
-			else if(strcmp($cur_tab, SUPP_INFO))
+			else if(strcmp($cur_tab, SUPP_INFO) == 0)
 				$rightPanel .= 
 				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . '">Supplier Transactions</a></li>
 	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
@@ -380,7 +372,7 @@ function getRightPanel($email, $cur_tab){
 
         if($isCustomer){
 
-        	if( strcmp($cur_tab, CUST_PROFILE))
+        	if( strcmp($cur_tab, CUST_PROFILE) == 0)
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
 	        	<li class="active"><a href="#" onclick="getContent( ' . CUST_PROFILE . ')">Customer Profile <span class="sr-only">(current)</span></a></li>';

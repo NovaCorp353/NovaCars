@@ -80,9 +80,9 @@ function getMgrCustTransHeader($email)
 	global $conn;
 
 	$query = 
-	"SELECT first_name, last_name, dept_name
-	 FROM manager NATURAL JOIN user
-	 WHERE email = '$email';";
+	"SELECT U.first_name, U.last_name, E.dept_name 
+	 FROM manager M JOIN user U ON M.email = U.email JOIN Employee E ON E.email = M.email 
+	 WHERE M.email = '$email';";
 
 	 $res = $conn->query($query);
 
@@ -93,39 +93,47 @@ function getMgrCustTransHeader($email)
 
 function getMgrCustTransStats($dept_name)
 {
-	global $conn;
-
+	$conn = openConn();
 	$query = 
-	"SELECT COUNT(transaction_id) as trans_count, SUM(amount) as tot_revenue
-		FROM transaction NATURAL JOIN CustomerOperation
+	"SELECT COUNT(CO.transaction_id) as trans_count, SUM(T.amount) as tot_revenue
+		FROM transaction T JOIN CustomerOperation CO on CO.transaction_id = T.id
 		WHERE dept_name = '$dept_name';";
 
 	$res = $conn->query($query);
 
 	if(mysqli_num_rows($res) == 1)
-	 	return $res;
+	{
+		closeConn($conn);
+		return $res;
+	}
+	
+	closeConn($conn);
 	return 0;
 }
 
 function getMgrCustTrans($dept_name, $filter)
 {
-	global $conn;
+	$conn = openConn();
 
 	$query = 
-	"SELECT T.transaction_id, UC.first_name, UC.last_name, A.model, CO.op_name, 
-			UCl.first_name, UCl.last_name, T.date
-			FROM ((((CustomerOperation CO JOIN User UCl ON UCl.email = CO.clerk_email)
-					JOIN User UC ON UC.email = CO.customer_email)
-					JOIN Auto A ON A.plate = CO.auto_plate)
-					JOIN Transaction T ON T.id = CO.transaction_id)
-					JOIN Employee E ON E.email = CO.clerk_email
-			WHERE E.dept_name = '$dept_name' AND CO.op_name LIKE "%'$filter'%";";
+	"SELECT T.id, UC.first_name AS f_name, UC.last_name AS l_name, A.model, CO.op_name, UCl.first_name, UCl.last_name, T.amount, T.date
+    	FROM CustomerOperation CO JOIN User UCl ON UCl.email = CO.tech_email
+    	JOIN User UC ON UC.email = CO.customer_email
+   		JOIN Auto A ON A.plate = CO.auto_plate
+    	JOIN Transaction T ON T.id = CO.transaction_id
+    	JOIN Employee E1 ON E1.email = CO.tech_email
+    	JOIN Employee E2 ON E2.email = CO.clerk_email
+   		WHERE (E1.dept_name = '$dept_name' OR E2.dept_name = '$dept_name') AND CO.op_name LIKE '%$filter%'";
 
 	$res = $conn->query($query);
 
 	 if(mysqli_num_rows($res) == 1)
+	 {
+	 	closeConn($conn);
 	 	return $res;
+	 }
+	 
+	 closeConn($conn);
 	 return 0;
 }
-
 ?>
