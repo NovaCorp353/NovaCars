@@ -66,7 +66,6 @@ function getCustomerTransactions(){
 
 	if(strcmp($role, MANAGER) == 0)
 	{
-		echo "<pre>here<pre>";
 		$header = getMgrCustTransHeader($_SESSION["user"]);
 		$deptName = $header['dept_name'];
 		$firstName = $header['first_name'];
@@ -118,9 +117,17 @@ function getCustomerTransactions(){
      {
      	$custName = $data['f_name'].' '.$data['l_name'];
      	$techName = $data['first_name'].' '.$data['last_name'];
-     	$content .= '<tr><td>'.$data['id'].'</td><td>'.$custName.'</td><td>'.$data['model']
-     				.'</td><td>'.$data['op_name'].'</td><td>'.$techName.'</td><td>'
-     				.$data['amount'].'</td><td>'.$data['date'].'</td><td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td></tr>';
+     	$content .= 
+     	'<tr>
+     		<td>'.$data['id'].'</td>
+     		<td>'.$custName.'</td>
+     		<td>'.$data['model'].'</td>
+     		<td>'.$data['op_name'].'</td>
+     		<td>'.$techName.'</td>
+     		<td>'.$data['amount'].'</td>
+     		<td>'.$data['date'].'</td>
+     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+     	</tr>';
      }
 	 $content .= '
               </tbody>
