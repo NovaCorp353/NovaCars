@@ -208,7 +208,6 @@ function getClerkCustTrans($email, $filter, $all)
 	 
 	 closeConn($conn);
 	 return NULL;
-
 }
 
 function getDepartment($email)
@@ -226,5 +225,124 @@ function getDepartment($email)
 	 return 0;
 }
 
+function getTechHeader($email)
+{
+	$conn = openConn();
+
+	$query = 
+	"SELECT U.first_name, U.last_name
+	 FROM Technician C JOIN user U ON C.email = U.email
+	 WHERE C.email = '$email';";
+
+	 $res = $conn->query($query);
+
+	 if(mysqli_num_rows($res) == 1)
+	 	return $res->fetch_assoc();
+	 return 0;
+}
+
+function getTechCustTransStats($email)
+{
+	$conn = openConn();
+	$query = 
+	"SELECT COUNT(CO.transaction_id) as trans_count, SUM(T.amount) as tot_revenue
+		FROM transaction T JOIN CustomerOperation CO on CO.transaction_id = T.id
+		WHERE tech_email = '$email';";
+
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) == 1)
+	{
+		closeConn($conn);
+		return $res->fetch_assoc();
+	}
+	
+	closeConn($conn);
+	return 0;
+}
+
+function getTechCustTrans($email, $filter)
+{
+	$conn = openConn();
+
+	$query = 
+	"SELECT T.id, UC.first_name, UC.last_name, A.model, CO.op_name, T.amount, T.date
+    	FROM CustomerOperation CO JOIN User UC ON UC.email = CO.customer_email
+   		JOIN Auto A ON A.plate = CO.auto_plate
+    	JOIN Transaction T ON T.id = CO.transaction_id
+   		WHERE CO.tech_email = '$email' AND (CO.op_name LIKE '%$filter%' OR A.model LIKE '%$filter%' 
+   				OR T.id = '$filter');";
+	
+		
+	 $res = $conn->query($query);
+	 if(mysqli_num_rows($res)>0)
+	 {
+	 	closeConn($conn);
+	 	return $res;
+	 }
+	 
+	 closeConn($conn);
+	 return NULL;
+}
+
+function getCustHeader($email)
+{
+	$conn = openConn();
+
+	$query = 
+	"SELECT U.first_name, U.last_name, C.membership_sts, C.bonus_pts
+	 FROM Customer C JOIN User U ON C.email = U.email
+	 WHERE C.email = '$email';";
+
+	 $res = $conn->query($query);
+
+	 if(mysqli_num_rows($res) == 1)
+	 	return $res->fetch_assoc();
+	 return 0;
+}
+
+function getCustAutos($email)
+{
+	$conn = openConn();
+
+	$query = 
+	"SELECT A.model, A.year, A.plate
+    	FROM Auto A JOIN Customer C ON C.email = A.customer_email
+   		WHERE C.email = '$email';";
+	
+		
+	 $res = $conn->query($query);
+	 if(mysqli_num_rows($res)>0)
+	 {
+	 	closeConn($conn);
+	 	return $res;
+	 }
+	 
+	 closeConn($conn);
+	 return NULL;
+}
+
+function getCustHistory($email)
+{
+	$conn = openConn();
+
+	$query = 
+	"SELECT T.id, A.model, A.year, CO.op_name, T.amount, T.date
+    	FROM CustomerOperation CO JOIN User UC ON UC.email = CO.customer_email
+   		JOIN Auto A ON A.plate = CO.auto_plate
+    	JOIN Transaction T ON T.id = CO.transaction_id
+   		WHERE CO.customer_email = '$email'";
+	
+		
+	 $res = $conn->query($query);
+	 if(mysqli_num_rows($res)>0)
+	 {
+	 	closeConn($conn);
+	 	return $res;
+	 }
+	 
+	 closeConn($conn);
+	 return NULL;
+}
 
 ?>
