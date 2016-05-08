@@ -25,6 +25,7 @@ define("CHANGE_PASSWORD", "ChangePassword");
 define("ADD_AUTO", "AddAuto");
 define("AUTO_LIST", "AutoList");
 define("REMOVE_AUTO", "RemoveAuto");
+define("REPORT_MOST_PURCHASES", "ReportMostPurchases");
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -455,5 +456,32 @@ function removeAuto(){
 	 
 	 closeConn($conn);
 	 return 0;
+}
+
+function getCustomersWithMostExpensivePurchases($startYear, $endYear){
+	$conn = openConn();
+
+	$query = 
+	'SELECT U.first_name, U.last_name FROM Customer C, User U WHERE C.email = U.email 
+			AND C.email IN 
+            (SELECT CP.email FROM 
+            	(SELECT C.email, SUM(T.amount) AS sum 
+                 FROM Customer C JOIN CustomerOperation CO ON C.email = CO.customer_email JOIN Transaction T ON CO.transaction_id = T.id 
+    			WHERE T.date >= "'.$startYear.'-01-01" AND T.date <= "'.$endYear.'-12-31"
+    			GROUP BY C.email) CP 
+      			WHERE CP.sum >= ALL (SELECT CP2.sum 
+                                     FROM (SELECT C.email, SUM(T.amount) AS sum 
+                                     FROM Customer C JOIN CustomerOperation CO ON C.email = CO.customer_email JOIN Transaction T ON CO.transaction_id = T.id 
+                                     WHERE T.date >= "'.$startYear.'-01-01" AND T.date <= "'.$endYear.'-12-31"
+                                     GROUP BY C.email) CP2)
+            )';
+	
+	$res = $conn->query($query);
+	if(mysqli_num_rows($res) > 0){
+	 	return $res;
+	}
+	 
+	 closeConn($conn);
+	 return null;
 }
 ?>

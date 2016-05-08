@@ -832,9 +832,40 @@ function getOverview(){
 
 		<div id="passwordBox" style="visibility: hidden;" class="alert alert-danger" style="width:50%" role="alert">
     		<p id="passwordBox-lb" class="text-center"/>
-		</div>
+		</div>';
 
-		</div>
+		if(strcmp($role, MANAGER) == 0){
+
+			$customerWithMostExpensivePurchases = getCustomersWithMostExpensivePurchases(2000, 2016);
+
+			$content .= 
+			'<div id="reportError" style="visibility: hidden;" class="alert alert-danger" style="width:50%" role="alert">
+	    		<p id="reportError-lb" class="text-center"/>
+			</div>
+			<div class="panel panel-default">
+			<div class="panel-heading">Customers with the Most Expensive Purchases</div> 
+			<div class="panel-body">
+				<form class="form-inline" role="form">
+					<div class="form-group">
+						<input type="number" min="2000" max="2016" id = "mostPurchasesStartYear" placeholder="Start year" class="form-control">
+						<input type="number" min="2000" max="2016" id = "mostPurchasesEndYear" placeholder="End year" class="form-control">
+						<button onclick="getReportMostPurchased(\''.REPORT_MOST_PURCHASES.'\')" class="btn btn-primary">Search</button>	
+					</div>
+				</form>
+			</div>
+			<ul id="reportMostPurchased" class="list-group">';
+
+			while($row = $customerWithMostExpensivePurchases->fetch_assoc()){
+			    $content .= '<li class="list-group-item">'.$row['first_name'].' '.$row['last_name'].'</li>';
+			}
+
+			$content .= '</ul>
+					</div>';
+		}
+
+
+		$content .= 
+		'</div>
 		</div>
 
 		<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal" aria-hidden="true">
@@ -1045,6 +1076,33 @@ function isCustomer($email){
 	return $_SESSION['isCustomer'];
 }
 
+function getReportMostPurchased(){
+
+	if(isset($_POST['startMostPurchased']))
+		$startYear = $_POST['startMostPurchased'];
+	else
+		$startYear = 2000;
+
+	if(isset($_POST['endMostPurchased']))
+		$endYear = $_POST['endMostPurchased'];
+	else
+		$endYear = 2016;
+
+	$customerWithMostExpensivePurchases = getCustomersWithMostExpensivePurchases($startYear, $endYear);
+	$content = '
+			<ul id="reportMostPurchased" class="list-group">';
+
+	if($customerWithMostExpensivePurchases){
+		while($row = $customerWithMostExpensivePurchases->fetch_assoc()){
+		    $content .= '<li class="list-group-item">'.$row['first_name'].' '.$row['last_name'].'</li>';
+		}
+	} else 
+		$content .= '<li class="list-group-item">No results!</li>';
+
+	$content .= '</ul>';
+	return $content;
+}
+
 // Execution starts here
 session_start();
 
@@ -1079,6 +1137,8 @@ else if(strcmp($_POST['action'], AUTO_LIST) == 0)
 	$res = getAutoList();
 else if(strcmp($_POST['action'], REMOVE_AUTO) == 0)
 	$res = removeAuto();
+else if(strcmp($_POST['action'], REPORT_MOST_PURCHASES) == 0)
+	$res = getReportMostPurchased(); 
 else 
 	$res = getOverview();
 echo $res;

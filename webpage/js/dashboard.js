@@ -205,3 +205,36 @@ function removeAuto(action, plate){
 			}
 		});
 }
+
+function getReportMostPurchased(action){
+	event.preventDefault();
+
+	// Check if end year is greater than start year
+	var startYear = $('#mostPurchasesStartYear').val();
+	var endYear = $('#mostPurchasesEndYear').val();
+
+	if(endYear < startYear){
+		$('#reportError-lb').text('Start year should be earlier than end year!');
+		$('#reportError').css('visibility','visible');	
+	} else {
+		// Start ajax
+		var content = $('#reportMostPurchased');
+		$.ajax({
+				type: "POST",
+				url: "php/dashboard.php",
+				data: {action:action, startMostPurchased:startYear, endMostPurchased:endYear},
+				cache: false,
+				success: function(result){
+					if(result) {
+						// Update the list
+						content.html(); 
+						content.html(result); 
+						$('#reportError').css('visibility','hidden');	
+					} else {
+						$('#reportError-lb').text('Error!');
+						$('#reportError').css('visibility','visible');	
+					}
+				}
+			});
+	}
+}
