@@ -81,3 +81,27 @@ function getCustFiltered(data) {
 		});
 	} 
 }
+
+function updatePassword(data){
+	var pass = $('#passField').val();
+	var passwordBox = $('#passwordBox');
+	if(pass != null && pass != ""){
+		$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			data: {action:data, password:pass},
+			cache: false,
+			success: function(result){
+				if(result == 1) {
+					$('#passwordBox-lb').text('Password changed successfully!');
+					$("#passwordBox").attr('class', 'col-md-8 col-md-offset-2 alert alert-success');   
+				} else {
+					$('#passwordBox-lb').text('Password change failed! Try another password.');
+					$("#passwordBox").attr('class', 'col-md-8 col-md-offset-2 alert alert-danger');   
+				}
+				$('#passwordModal').modal('toggle');
+				$('#passwordBox').css('visibility','visible');
+			}
+		});
+	} 
+}

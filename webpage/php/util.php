@@ -21,6 +21,7 @@ define("CUST_PROFILE", "CustomerProfile");
 define("FILTER_EMPLOYEE", "FilterEmployee");
 define("NEW_EMPLOYEE", "NewEmployee");
 define("FILTER_CUST_TRANS", "FilterCustTrans");
+define("CHANGE_PASSWORD", "ChangePassword");
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -405,5 +406,20 @@ function getCustHistory($email)
 	 
 	 closeConn($conn);
 	 return NULL;
+}
+
+function changePassword(){
+	$conn = openConn();
+
+	$query = 
+	"UPDATE User
+	SET password = '".$_POST['password']."' 
+	WHERE User.email = '" . $_SESSION['user'] . "'";
+	
+	 if($conn->query($query) == FALSE)
+	 	return 0;
+	 
+	 closeConn($conn);
+	 return 1;
 }
 ?>

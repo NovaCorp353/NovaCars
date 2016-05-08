@@ -1,6 +1,5 @@
 <?php
 include('util.php');
-//include('session.php');
 
 function getCustomerProfile()
 {
@@ -708,13 +707,38 @@ function getOverview(){
 			<div class="panel-heading">Employee profile</div> 
 			<ul class="list-group">
 				<li class="list-group-item"><strong>Email</strong>: ' . $email . '</li>
-				<li class="list-group-item"><strong>Password</strong>: <button class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Change</button></li>
+				<li class="list-group-item"><strong>Password</strong>: <button class="btn btn-default" data-toggle="modal" data-target="#passwordModal"><span class="glyphicon glyphicon-pencil"></span> Change</button></li>
 				<li class="list-group-item"><strong>Salary</strong>: ' . $salary . '</li>
 				<li class="list-group-item"><strong>Expertise Level</strong>: ' . $expertise . '</li>
 			</ul>
 		</div>
-	</div>
-	</div>';
+
+		<div id="passwordBox" style="visibility: hidden;" class="alert alert-danger" style="width:50%" role="alert">
+    		<p id="passwordBox-lb" class="text-center"/>
+		</div>
+
+		</div>
+		</div>
+
+		<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	            <h4 class="modal-title">Update password</h4>
+	            </div>
+	            <div class="modal-body">
+	                <form>
+	                	<label for="passField">New Password</label>
+	                	<input type="password" class="form-control" id = "passField" placeholder="Type your new password here" required></input>
+	                </form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                <button type="button" class="btn btn-danger" onclick="updatePassword(\''.CHANGE_PASSWORD.'\')">Save new password</button>
+	        </div>
+	    	</div>
+	  		</div>
+			</div>';
 
 		$rightPanel = getRightPanel($email, OVERVIEW);
 		return $rightPanel . $content;
@@ -930,6 +954,8 @@ else if(strcmp($_POST['action'], NEW_EMPLOYEE) == 0)
 	$res = getNewEmployee();
 else if(strcmp($_POST['action'], FILTER_CUST_TRANS) == 0)
 	$res = getCustFiltered();
+else if(strcmp($_POST['action'], CHANGE_PASSWORD) == 0)
+	$res = changePassword();
 else 
 	$res = getOverview();
 echo $res;
