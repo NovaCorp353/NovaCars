@@ -2,8 +2,10 @@
 include('util.php');
 //include('session.php');
 
-function getCustomerProfile(){
+function getCustomerProfile()
+{
 	// TODO
+	// ADD AUTO
 
 	$rightPanel = getRightPanel($_SESSION["user"], CUST_PROFILE);
 	$header = getCustHeader($_SESSION["user"]);
@@ -202,20 +204,8 @@ function getDepartmentInfo(){
 			
 	        </div>
 	      </div>';
-		return $rightPanel . $content;
-	} 
-	else if(strcmp($_SESSION['role'], TECHNICIAN) == 0)
-	{
-		// TODo
 	}
-	else if(strcmp($_SESSION['role'], CLERK) == 0)
-	{
-		// TODO
-	}
-	else
-	{
-		//okay
-	}
+	return $rightPanel . $content; 
 }
 
 function getCustFiltered()
@@ -777,20 +767,13 @@ function getRightPanel($email, $cur_tab)
 		}
 		else if(strcmp($role, TECHNICIAN) == 0){
 
-			if(strcmp($cur_tab, DEPARTMENT_INFO) == 0)
+			if(strcmp($cur_tab, CUST_TRANSACTIONS) == 0)
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info <span class="sr-only">(current)</span></a></li>
-				<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions</a></li>';
-				
-			else if(strcmp($cur_tab, CUST_TRANSACTIONS) == 0)
-				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info</a></li>
-				<li class="active"><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions <span class="sr-only">(current)</span></a></li>';
+				'<li class="active"><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions <span class="sr-only">(current)</span></a></li>';
 
 			else
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info</a></li>
-				<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions</a></li>';
+				'<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions</a></li>';
 		}
 		else if(strcmp($role, CLERK) == 0){
 
