@@ -22,6 +22,8 @@ define("FILTER_EMPLOYEE", "FilterEmployee");
 define("NEW_EMPLOYEE", "NewEmployee");
 define("FILTER_CUST_TRANS", "FilterCustTrans");
 define("CHANGE_PASSWORD", "ChangePassword");
+define("ADD_AUTO", "AddAuto");
+define("AUTO_LIST", "AutoList");
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -416,10 +418,25 @@ function changePassword(){
 	SET password = '".$_POST['password']."' 
 	WHERE User.email = '" . $_SESSION['user'] . "'";
 	
-	 if($conn->query($query) == FALSE)
-	 	return 0;
+	 if($conn->query($query))
+	 	return 1;
 	 
 	 closeConn($conn);
-	 return 1;
+	 return 0;
+}
+
+function addAuto(){
+	$conn = openConn();
+
+	$query = 
+	"INSERT INTO Auto(plate, model, year, customer_email) 
+	VALUES ('".$_POST['plate']."', '".$_POST['model']."', '".$_POST['year']."', '".$_SESSION['user']."')";
+	
+	 if($conn->query($query)){
+	 	return 1;
+	 }
+	 
+	 closeConn($conn);
+	 return 0;
 }
 ?>

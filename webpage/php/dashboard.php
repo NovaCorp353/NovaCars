@@ -14,7 +14,6 @@ function getCustomerProfile()
 	$membershipStatus = $header['membership_sts'];
 	$bonusPoints = $header['bonus_pts'];
 
-	$autoList = getCustAutos($_SESSION['user']);
 	$history = getCustHistory($_SESSION['user']);
 
 	$content = 
@@ -32,34 +31,21 @@ function getCustomerProfile()
 		       <!-- List group -->
 		       <ul class="list-group">
 		        <li class="list-group-item"><strong>Email</strong>: '.$_SESSION['user'].'</li>
-		        <li class="list-group-item"><strong>Password</strong>: <button class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Change</button></li>
+		        <li class="list-group-item"><strong>Password</strong>: <button class="btn btn-default" data-toggle="modal" data-target="#passwordModal"><span class="glyphicon glyphicon-pencil"></span> Change</button></li>
 		      </ul>
 		    </div>
-		  </div>
-		  
-		  <div class="col-sm-12 col-md-6">
-		    <div class="panel panel-info">
-		     <!-- Default panel contents -->
-		     <div class="panel-heading">Owned vehicles</div>
 
-		     <!-- List group -->
-		     <ul class="list-group">';
-	if($autoList == NULL)
-    {
-    	$table = "No autos to display";
-    }
-    else
-    {
-    	while($data = $autoList->fetch_assoc())
-    	{
-    		$content .='<li class="list-group-item"><a><span class="glyphicon glyphicon-edit"></span></a><strong> '.$data['model'].' ['.$data['year'].'] '.'</strong>: '.$data['plate'].'</li>';
-    	}
-	}
-	$content .= '</ul>
-		  </div>
-		  <button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
-		</div>
-		</div>
+			<div id="passwordBox" style="visibility: hidden;" class="alert alert-danger" style="width:50%" role="alert">
+	    		<p id="passwordBox-lb" class="text-center"/>
+			</div>
+
+		  </div>';
+
+
+		$content .= '<div id="autoPanel">' .getAutoList() .'</div>';
+
+		$content .= 
+		'</div>
 
 		<h2 class="sub-header">History</h2>
 		<div class="table-responsive">
@@ -99,9 +85,95 @@ function getCustomerProfile()
 	$content .= 
 	'	    </tbody>
 		  </table>
-		</div></div></div></div>';
+		</div>
+		</div>
+		</div>
+		</div>
+
+		<!-- Modal for password change -->
+		<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	            <h4 class="modal-title">Update password</h4>
+	            </div>
+	            <div class="modal-body">
+	                <form>
+	                	<label for="passField">New Password</label>
+	                	<input type="password" class="form-control" id = "passField" placeholder="Type your new password here" required></input>
+	                </form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                <button type="button" class="btn btn-danger" onclick="updatePassword(\''.CHANGE_PASSWORD.'\')">Save new password</button>
+	        	</div>
+	    	</div>
+	  	</div>
+		</div>
+
+
+		<!-- Modal for adding auto -->
+		<div class="modal fade" id="addAutoModal" tabindex="-1" role="dialog" aria-labelledby="addAutoModal" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	            <h4 class="modal-title">Add new auto</h4>
+	            </div>
+	            <div class="modal-body">
+	                <form>
+	                	<label for="addAuto-plate">Plate</label>
+	                	<input type="text" class="form-control" id = "addAuto-plate" placeholder="Enter the plate number" required></input>
+
+	                	<label for="addAuto-model">Model</label>
+	                	<input type="text" class="form-control" id = "addAuto-model" placeholder="Enter the car model" required></input>
+
+	                	<label for="addAuto-year">Plate</label>
+	                	<input type="number" min="1970" max="'.date("Y").'" class="form-control" id = "addAuto-year" placeholder="Enter the production year" required></input>
+	                </form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                <button type="button" class="btn btn-primary" onclick="addAuto(\''.ADD_AUTO.'\')">Add</button>
+	        	</div>
+	    	</div>
+	  	</div>
+		</div>';
 
 	return $rightPanel.$content;
+}
+
+function getAutoList(){
+	$content = 
+	'<div class="col-sm-12 col-md-6">
+		    <div class="panel panel-info">
+		     <!-- Default panel contents -->
+		     <div class="panel-heading">Owned vehicles</div>
+
+		     <!-- List group -->
+		     <ul class="list-group">';
+
+     $autoList = getCustAutos($_SESSION['user']);	
+	if($autoList == NULL)
+    {
+    	$table = "No autos to display";
+    }
+    else
+    {
+    	while($data = $autoList->fetch_assoc())
+    	{
+    		$content .='<li class="list-group-item"><a><span class="glyphicon glyphicon-edit"></span></a><strong> '.$data['model'].' ['.$data['year'].'] '.'</strong>: '.$data['plate'].'</li>';
+    	}
+	}
+	$content .= '</ul>
+		  </div>
+		  <button class="btn btn-success" data-toggle="modal" data-target="#addAutoModal"><span class="glyphicon glyphicon-plus"></span> Add</button>
+		</div>
+
+		<div id="addAutoBox" style="visibility: hidden;" class="alert alert-danger" style="width:50%" role="alert">
+    		<p id="addAutoBox-lb" class="text-center"/>
+		</div>';
+
+	return $content;
 }
 
 function getDepartmentInfo(){
@@ -735,10 +807,10 @@ function getOverview(){
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 	                <button type="button" class="btn btn-danger" onclick="updatePassword(\''.CHANGE_PASSWORD.'\')">Save new password</button>
-	        </div>
+	        	</div>
 	    	</div>
-	  		</div>
-			</div>';
+	  	</div>
+		</div>';
 
 		$rightPanel = getRightPanel($email, OVERVIEW);
 		return $rightPanel . $content;
@@ -956,6 +1028,10 @@ else if(strcmp($_POST['action'], FILTER_CUST_TRANS) == 0)
 	$res = getCustFiltered();
 else if(strcmp($_POST['action'], CHANGE_PASSWORD) == 0)
 	$res = changePassword();
+else if(strcmp($_POST['action'], ADD_AUTO) == 0)
+	$res = addAuto();
+else if(strcmp($_POST['action'], AUTO_LIST) == 0)
+	$res = getAutoList();
 else 
 	$res = getOverview();
 echo $res;

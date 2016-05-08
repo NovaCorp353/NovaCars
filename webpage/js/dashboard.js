@@ -105,3 +105,45 @@ function updatePassword(data){
 		});
 	} 
 }
+
+function addAuto(data)
+{
+	var plate = $('#addAuto-plate').val();
+	var model = $('#addAuto-model').val();
+	var year = $('#addAuto-year').val();
+
+	var autoPanel = $('#autoPanel'); // TODO
+	if(plate != "" && model != "" && year != ""){
+		$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			data: {action:data, plate:plate, model:model, year:year},
+			cache: false,
+			success: function(result){
+				if(result == 1) {
+					// Update the auto list
+					$.ajax({
+						type: "POST",
+						url: "php/dashboard.php",
+						data: {action:'AutoList'},
+						cache: false,
+						success: function(result){
+							if(result) {
+								autoPanel.html(result);  
+							}
+						}
+					});
+
+
+					$('#addAutoBox-lb').text('Auto was successfully added!');
+					$("#addAutoBox").attr('class', 'col-md-8 col-md-offset-2 alert alert-success');   
+				} else {
+					$('#addAutoBox-lb').text('Unable to add new auto! Try again.');
+					$("#addAutoBox").attr('class', 'col-md-8 col-md-offset-2 alert alert-danger');   
+				}
+				$('#addAutoModal').modal('toggle');
+				$('#addAutoBox').css('visibility','visible');
+			}
+		});
+	} 		
+}
