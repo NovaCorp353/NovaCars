@@ -112,7 +112,7 @@ function addAuto(data)
 	var model = $('#addAuto-model').val();
 	var year = $('#addAuto-year').val();
 
-	var autoPanel = $('#autoPanel'); // TODO
+	var autoPanel = $('#autoPanel');
 	if(plate != "" && model != "" && year != ""){
 		$.ajax({
 			type: "POST",
@@ -129,6 +129,7 @@ function addAuto(data)
 						cache: false,
 						success: function(result){
 							if(result) {
+								autoPanel.html();
 								autoPanel.html(result);  
 							}
 						}
@@ -146,4 +147,40 @@ function addAuto(data)
 			}
 		});
 	} 		
+}
+
+function removeAuto(action, plate){
+
+	var autoPanel = $('#autoPanel');
+	$.ajax({
+			type: "POST",
+			url: "php/dashboard.php",
+			data: {action:action, plate:plate},
+			cache: false,
+			success: function(result){
+				if(result == 1) {
+					// Update the auto list
+					$.ajax({
+						type: "POST",
+						url: "php/dashboard.php",
+						data: {action:'AutoList'},
+						cache: false,
+						success: function(result){
+							if(result) {
+								autoPanel.html();
+								autoPanel.html(result);  
+							}
+						}
+					});
+
+
+					$('#addAutoBox-lb').text('Auto was successfully removed!');
+					$("#addAutoBox").attr('class', 'col-md-8 col-md-offset-2 alert alert-success');   
+				} else {
+					$('#addAutoBox-lb').text('Unable to remove auto!');
+					$("#addAutoBox").attr('class', 'col-md-8 col-md-offset-2 alert alert-danger');   
+				}
+				$('#addAutoBox').css('visibility','visible');
+			}
+		});
 }

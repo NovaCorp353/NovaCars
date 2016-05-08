@@ -161,7 +161,7 @@ function getAutoList(){
     {
     	while($data = $autoList->fetch_assoc())
     	{
-    		$content .='<li class="list-group-item"><a><span class="glyphicon glyphicon-edit"></span></a><strong> '.$data['model'].' ['.$data['year'].'] '.'</strong>: '.$data['plate'].'</li>';
+    		$content .='<li class="list-group-item"><a onclick="removeAuto(\''.REMOVE_AUTO.'\', \''.$data['plate'].'\')"><span class="glyphicon glyphicon-remove text-danger"></span></a><strong> '.$data['model'].' ['.$data['year'].'] '.'</strong>: '.$data['plate'].'</li>';
     	}
 	}
 	$content .= '</ul>
@@ -1032,6 +1032,8 @@ else if(strcmp($_POST['action'], ADD_AUTO) == 0)
 	$res = addAuto();
 else if(strcmp($_POST['action'], AUTO_LIST) == 0)
 	$res = getAutoList();
+else if(strcmp($_POST['action'], REMOVE_AUTO) == 0)
+	$res = removeAuto();
 else 
 	$res = getOverview();
 echo $res;

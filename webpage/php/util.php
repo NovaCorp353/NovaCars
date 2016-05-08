@@ -24,6 +24,7 @@ define("FILTER_CUST_TRANS", "FilterCustTrans");
 define("CHANGE_PASSWORD", "ChangePassword");
 define("ADD_AUTO", "AddAuto");
 define("AUTO_LIST", "AutoList");
+define("REMOVE_AUTO", "RemoveAuto");
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -430,7 +431,22 @@ function addAuto(){
 
 	$query = 
 	"INSERT INTO Auto(plate, model, year, customer_email) 
-	VALUES ('".$_POST['plate']."', '".$_POST['model']."', '".$_POST['year']."', '".$_SESSION['user']."')";
+	VALUES ('".$_POST['plate']."', '".$_POST['model']."', '".$_POST['year']."', '".$_SESSION['user']."');";
+	
+	 if($conn->query($query)){
+	 	return 1;
+	 }
+	 
+	 closeConn($conn);
+	 return 0;
+}
+
+function removeAuto(){
+	$conn = openConn();
+
+	$query = 
+	"DELETE FROM Auto 
+	WHERE plate = '".$_POST['plate']."' AND customer_email = '".$_SESSION['user']."';";
 	
 	 if($conn->query($query)){
 	 	return 1;
