@@ -15,7 +15,6 @@ $('#signin-form').submit(function(event) {
 			beforeSend: function(){ $("#signin-btn").val('Connecting...');},
 			success: function(data){
 				if(data == 1) {	
-					alert('Success!');
 					$('#signin-err').css('visibility','hidden'); 
 					window.location.href = 'dashboard.html'; 
 				} else {
