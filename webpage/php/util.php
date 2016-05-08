@@ -21,6 +21,7 @@ define("CUST_PROFILE", "CustomerProfile");
 define("FILTER_EMPLOYEE", "FilterEmployee");
 define("NEW_EMPLOYEE", "NewEmployee");
 define("FILTER_CUST_TRANS", "FilterCustTrans");
+define("ADD_TRANS", "add_trans");
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -323,13 +324,11 @@ function getDepartmentDetailed($dept_name){
 	return 0;
 }
 
-function getOperations($dept_name){
+function getOperations(){
 	$conn = openConn();
 	
-	$query = 
-	"SELECT op_name, cost 
-	FROM Operation 
-	WHERE dept_name = '$dept_name'";
+	$query = "SELECT O.dept_name, O.op_name, O.cost, T.tech_email\n"
+    . "FROM Operation O JOIN technicianoperation T ON O.dept_name = T.dept_name AND O.op_name = T.op_name";
  
 	$res = $conn->query($query);
 
@@ -407,4 +406,46 @@ function getCustHistory($email)
 	 closeConn($conn);
 	 return NULL;
 }
+
+function addNewTransaction($amount, $op_name, $dept_name, $tech_email, $clerk_email, $cust_email, $auto_plate)
+{
+	$conn = openConn();
+
+	$date = date('Y-m-d H:i:s');
+
+	$query = 
+	"INSERT INTO `transaction` (`id`, `amount`, `date`) VALUES (NULL, '$amount', '$date')";
+
+	if($conn->query($query)!=FALSE)
+	{
+		/*$myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+		$txt = $dept_name.$op_name.$tech_email.$clerk_email.$cust_email.$auto_plate.$conn->insert_id;
+		fwrite($myfile, $txt);
+		fclose($myfile);*/
+		
+		$query =
+		"INSERT INTO `customeroperation` (`transaction_id`, `dept_name`, `op_name`, `tech_email`, `clerk_email`, `customer_email`, `auto_plate`) 
+		VALUES ('".$conn->insert_id."', '$dept_name', '$op_name', '$tech_email', '$clerk_email', '$cust_email', '$auto_plate')";
+
+		if($conn->query($query) == FALSE)
+		{
+			$query =
+			"DELETE FROM transaction where id = ".$conn->insert_id.";";
+			$conn->query($query);
+			closeConn($conn);
+			return 0;
+		}
+		else
+		{
+			closeConn($conn);
+			return 1;
+		}
+	}
+	else
+	{
+		closeConn($conn);
+		return 0;
+	}
+}
+
 ?>

@@ -702,8 +702,88 @@ function getCustomerTransactions(){
 	return $rightPanel . $content;
 }
 
-function getNewTransaction(){
-	// TODO
+function getNewTransaction()
+{
+	$rightPanel = getRightPanel($_SESSION["user"], NEW_TRANSACTION);
+
+	$content = 
+	'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">New Transaction</h1>
+		<div id="newtrans-err" style="visibility: hidden;" class="col-md-8 col-md-offset-2 alert alert-danger" role="alert">
+	    		<p id="newtrans-err-lb" class="text-center"/>
+	  	</div>
+		<form id="new-cust-trans-form">
+			<div style="width:50%">
+				<div class="form-group">
+					<label for="cust_email">Customer Email</label>
+					<input type="email" class="form-control" id="cust_email" placeholder="Email" required>
+				</div>
+				<div class="form-group">
+					<label for="auto_plate">Vehicle Plate Number</label>
+					<input type="text" class="form-control" id="auto_plate" placeholder="Plate Number" required>
+				</div>
+				<div class="form-group">
+					<label for="revenue">Revenue</label>
+					<input type="number" class="form-control" id="revenue" placeholder="Revenue">
+				</div>
+			<button onclick="addTrans(\''.ADD_TRANS.'\')" class="btn btn-success">Complete Transaction</button>
+			</div>	 
+			<div style="width:100%">
+				<h2 class="sub-header">Select operation</h2>
+				<div class="table-responsive">
+	            	<table class="table table-striped">
+	              		<thead>
+	                		<tr>
+	                  			<th></th>
+	                  			<th>Operation Name</th>
+					  			<th>Providing Department</th>
+	                  			<th>Cost</th>
+					  			<th>Technician</th>
+	                		</tr>
+	              		</thead>
+	              		<tbody>';
+    $ops = getOperations();
+    if($ops != NULL)
+    {
+    	$preO = "null";
+    	$preD = "null";
+    	 while($data = $ops->fetch_assoc())
+    	 {
+    	 	if(strcmp($preO, $data['op_name']) || strcmp($preD, $data['dept_name']))
+            {
+            	if(strcmp($preO, "null"))
+            	{
+            		$content .=
+            		'					</select>
+									</div>';
+            	}
+            	$content .= 
+		    	'			<tr>
+		    	 				<td><input type="radio" name="radiop" value = "'.$data['op_name'].'-'.$data['dept_name'].'"></td>
+	      						<td>'.$data['op_name'].'</td>
+								<td>'.$data['dept_name'].'</td>
+	                			<td>'.$data['cost'].'</td>
+	            				<td class="input-group" style="width:300px">
+									<div class="form-group">
+  										<select class="form-control" id="'.$data['op_name'].'-'.$data['dept_name'].'">  
+											<option>'.$data['tech_email'].'</option>';
+				$preO = $data['op_name'];
+				$preD = $data['dept_name'];
+            }
+            else
+            {
+            	$content .= '				<option>'.$data['tech_email'].'</option>';
+            }
+	    }
+    }
+    $content .= 
+    '         				</tbody>
+            			</table>
+          		</div>
+          	</div>
+        </form>
+    </div></div></div>';
+	return $rightPanel.$content;
 }
 
 function getSupplierTransactions(){
@@ -907,7 +987,8 @@ function getRightPanel($email, $cur_tab)
 	}
 }
 
-function getRole($email){
+function getRole($email)
+{
 	// Determine the position
 
 	if(!isset($_SESSION['role'])){ // Caching
@@ -939,7 +1020,8 @@ function getRole($email){
 }
 
 // Determine if the user is a customer
-function isCustomer($email){
+function isCustomer($email)
+{
 
 	if(!isset($_SESSION['isCustomer'])){ // Caching
 		$customer = checkRole($email, CUSTOMER);
@@ -949,6 +1031,27 @@ function isCustomer($email){
 	return $_SESSION['isCustomer'];
 }
 
+function addNewTransactionDash()
+{
+	$string = $_POST['operation'];
+	$token = strtok($string, "-");
+	$yo = 0;
+	while ($token !== false)
+	{
+		if($yo === 0)
+		{
+			$op_name = $token;
+			$yo++;
+		}
+		else
+		{
+			$dept_name = $token;
+		}
+		$token = strtok("-");
+	} 
+	$res = addNewTransaction($_POST['revenue'], $op_name, $dept_name, $_POST['tech_email'], $_SESSION['user'], $_POST['cust_email'], $_POST['auto_plate']);
+	return $res;
+}
 // Execution starts here
 session_start();
 
@@ -964,7 +1067,7 @@ else if(strcmp($_POST['action'], CUST_TRANSACTIONS) == 0)
 else if(strcmp($_POST['action'], SUPP_TRANSACTIONS) == 0)
 	$res = getSupplierTransactions();
 else if(strcmp($_POST['action'], NEW_TRANSACTION) == 0)
-	$res = getNewTrasaction();
+	$res = getNewTransaction();
 else if(strcmp($_POST['action'], SUPP_INFO) == 0)
 	$res = getSupplierInfo();
 else if(strcmp($_POST['action'], CUST_PROFILE) == 0)
@@ -975,6 +1078,8 @@ else if(strcmp($_POST['action'], NEW_EMPLOYEE) == 0)
 	$res = getNewEmployee();
 else if(strcmp($_POST['action'], FILTER_CUST_TRANS) == 0)
 	$res = getCustFiltered();
+else if(strcmp($_POST['action'], ADD_TRANS) == 0)
+	$res = addNewTransactionDash();
 else 
 	$res = getOverview();
 echo $res;
