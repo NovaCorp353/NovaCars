@@ -55,54 +55,57 @@ function getDepartmentInfo(){
 
 function getCustFiltered()
 {
-	$filter = $_POST['filter'];
-	$deptName = getDepartment($_SESSION['user']);
-	$trans = getMgrCustTrans($deptName['dept_name'], $filter);
-	$table = '<div id="table" class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Customer</th>
-				  <th>Auto</th>
-                  <th>Operation</th>
-                  <th>Technician</th>
-                  <th>Price</th>
-				  <th>Date</th>
-				  <th>Details</th>
-                </tr>
-              </thead>
-              <tbody>';
-    if($trans == NULL)
-    {
-    	$table = "No operation with the filter";
-    }
-    else
-    {
-    	while($data = $trans->fetch_assoc())
-	     {
-	     	$custName = $data['f_name'].' '.$data['l_name'];
-	     	$techName = $data['first_name'].' '.$data['last_name'];
-	     	$table .= 
-	     	'<tr>
-	     		<td>'.$data['id'].'</td>
-	     		<td>'.$custName.'</td>
-	     		<td>'.$data['model'].'</td>
-	     		<td>'.$data['op_name'].'</td>
-	     		<td>'.$techName.'</td>
-	     		<td>'.$data['amount'].'</td>
-	     		<td>'.$data['date'].'</td>
-	     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
-	     	</tr>';
-	     }
-		 $table .= '
-	              </tbody>
-	            </table>
-	          </div>';
-    }
-    
-    return $table;
-
+	$role = $_SESSION['role'];
+	if(strcmp($role, MANAGER) == 0)
+	{
+		$filter = $_POST['filter'];
+		$deptName = getDepartment($_SESSION['user']);
+		$trans = getMgrCustTrans($deptName['dept_name'], $filter);
+		$table = '<div id="table" class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>ID</th>
+	                  <th>Customer</th>
+					  <th>Auto</th>
+	                  <th>Operation</th>
+	                  <th>Technician</th>
+	                  <th>Price</th>
+					  <th>Date</th>
+					  <th>Details</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+	    if($trans == NULL)
+	    {
+	    	$table = "No operation with the filter";
+	    }
+	    else
+	    {
+	    	while($data = $trans->fetch_assoc())
+		     {
+		     	$custName = $data['f_name'].' '.$data['l_name'];
+		     	$techName = $data['first_name'].' '.$data['last_name'];
+		     	$table .= 
+		     	'<tr>
+		     		<td>'.$data['id'].'</td>
+		     		<td>'.$custName.'</td>
+		     		<td>'.$data['model'].'</td>
+		     		<td>'.$data['op_name'].'</td>
+		     		<td>'.$techName.'</td>
+		     		<td>'.$data['amount'].'</td>
+		     		<td>'.$data['date'].'</td>
+		     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+		     	</tr>';
+		     }
+			 $table .= '
+		              </tbody>
+		            </table>
+		          </div>';
+	    }
+	    
+	    return $table;
+	}
 }
 
 function getCustomerTransactions(){
@@ -137,14 +140,14 @@ function getCustomerTransactions(){
 			  <div class="panel-heading">Customer Transactions</div>
 			  <ul class="list-group">
 				<li class="list-group-item"><strong>Number of Transactions</strong>: ' . $noOfTrans . '</li>
-				<li class="list-group-item"><strong>Total Revenue</strong>:'.$revenue.'</li>
+				<li class="list-group-item"><strong>Total Revenue</strong>: '.$revenue.'</li>
 			  </ul>
 		</div>
 					
 		<h2 class="sub-header">Customer Transactions</h2>
 		<form class="form-inline" role="form">
 			<div class="form-group">
-				<input type="text" id="filterin" placeholder="Filter by operation name" class="form-control">
+				<input type="text" id="filterin" placeholder="Filter" class="form-control">
 				<button type="submit" id="filter" onclick="getCustFiltered(\'' .FILTER_CUST_TRANS. '\')" class="btn btn-primary">Filter</button>	
 			</div>
 		</form>
@@ -335,7 +338,7 @@ function getRightPanel($email, $cur_tab)
 				<div class="row">
 					<div class="col-sm-3 col-md-2 sidebar">
 						<ul class="nav nav-sidebar">
-							<li><a href="#">Overview</a></li>';
+							<li><a href="#" onclick="getContent( \'' . OVERVIEW . '\')">Overview</a></li>';
 
 		if(strcmp($role, MANAGER) == 0){
 

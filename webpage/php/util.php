@@ -139,7 +139,8 @@ function getMgrCustTrans($dept_name, $filter)
     	JOIN Transaction T ON T.id = CO.transaction_id
     	JOIN Employee E1 ON E1.email = CO.tech_email
     	JOIN Employee E2 ON E2.email = CO.clerk_email
-   		WHERE (E1.dept_name = '$dept_name' OR E2.dept_name = '$dept_name') AND CO.op_name LIKE '%$filter%'";
+   		WHERE (E1.dept_name = '$dept_name' OR E2.dept_name = '$dept_name') AND (CO.op_name LIKE '%$filter%' OR A.model LIKE '%$filter%' 
+   			OR UCL.last_name LIKE '%$filter%' OR UCL.first_name LIKE '%$filter%' OR T.id = '$filter');";
 
 	$res = $conn->query($query);
 
