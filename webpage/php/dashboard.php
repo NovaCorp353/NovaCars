@@ -3,9 +3,6 @@ include('util.php');
 
 function getCustomerProfile()
 {
-	// TODO
-	// ADD AUTO
-
 	$rightPanel = getRightPanel($_SESSION["user"], CUST_PROFILE);
 	$header = getCustHeader($_SESSION["user"]);
 
@@ -127,7 +124,7 @@ function getCustomerProfile()
 	                	<label for="addAuto-model">Model</label>
 	                	<input type="text" class="form-control" id = "addAuto-model" placeholder="Enter the car model" required></input>
 
-	                	<label for="addAuto-year">Plate</label>
+	                	<label for="addAuto-year">Year</label>
 	                	<input type="number" min="1970" max="'.date("Y").'" class="form-control" id = "addAuto-year" placeholder="Enter the production year" required></input>
 	                </form>
 	            </div>
@@ -142,7 +139,8 @@ function getCustomerProfile()
 	return $rightPanel.$content;
 }
 
-function getAutoList(){
+function getAutoList()
+{
 	$content = 
 	'<div class="col-sm-12 col-md-6">
 		    <div class="panel panel-info">
@@ -176,7 +174,8 @@ function getAutoList(){
 	return $content;
 }
 
-function getDepartmentInfo(){
+function getDepartmentInfo()
+{
 	// Getting right panel
 	$rightPanel = getRightPanel($_SESSION['user'], DEPARTMENT_INFO);
 
@@ -245,7 +244,6 @@ function getDepartmentInfo(){
 	                  <th>Email</th>
 	                  <th>Salary</th>
 	                  <th>Expertise Level</th>
-					  <th>Edit</th>
 	                </tr>
 	              </thead>
 	              <tbody>';
@@ -258,7 +256,6 @@ function getDepartmentInfo(){
                   <td>'.$data['email'].'</td>
                   <td>'.$data['salary'].'</td>
                   <td>'.$data['expertise_lvl'].'</td>
-                  <td><a onclick="editEmployee(\''.$data['email'].'\')"><span class="glyphicon glyphicon-edit"></span></a></td>
                 </tr>';
             $count++;
 	    }
@@ -857,8 +854,116 @@ function getNewTransaction()
 	return $rightPanel.$content;
 }
 
-function getSupplierTransactions(){
-	// TODO
+function getSupplierTransactions()
+{
+	$rightPanel = getRightPanel($_SESSION["user"], SUPP_TRANSACTIONS);
+
+	$content = 
+	'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Supplier Transactions</h1>
+		  <h3 class="text-muted">Clerk: Name Surname</h3>
+		
+		<div class="panel panel-info" style="width:50%">
+			  <!-- Default panel contents -->
+			  <div class="panel-heading">Quick Info</div>
+
+			  <!-- List group -->
+			  <ul class="list-group">
+				<li class="list-group-item"><strong>Number of Transactions</strong>: XX</li>
+				<li class="list-group-item"><strong>Total Cost</strong>:XXXX</li>
+			  </ul>
+		</div>
+					
+		<h2 class="sub-header">Supplier Transactions</h2>
+		<form class="form-inline" role="form">
+			<div class="form-group">
+				<input type="text" placeholder="Filter by supplier name or square part type" class="form-control">
+				<button type="submit" class="btn btn-primary">Filter</button>	
+				
+			</div>
+		</form>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Supplier name</th>
+				  <th>Spare part type</th>
+                  <th>Spare part model</th>
+				  <th>Spare part count</th>
+                  <th>Price</th>
+				  <th>Date</th>
+				  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+				  <td>Name Surname</td>
+				  <td>Spare Part Type 1</td>
+                  <td>Spare Part Model 1</td>
+				  <td>XX</td>
+                  <td>XXX</td>
+                  <td>Date here</td>
+				  <td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+				  <td>Name Surname</td>
+				  <td>Spare Part Type 2</td>
+                  <td>Spare Part Model 2</td>
+				  <td>XX</td>
+                  <td>XXX</td>
+                  <td>Date here</td>
+				  <td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+				</tr>
+              </tbody>
+            </table>
+          </div>
+		  
+		  		  <!-- Modal -->
+			<div id="detailed_info_modal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Detailed information about transaction #ID</h4>
+					</div>
+					<div class="modal-body">
+						<p><strong>Transaction was completed by: </strong> Sales Manager name here</p>
+						<p><strong>Total Cost: </strong> XXXX</p>
+						<p><strong>Address:</strong>Address here</p>
+						<h3 class="bg-primary">Supplier Information</h3>
+						<p><strong>Name:</strong>Name Surname</p>
+						<p><strong>Phone number:</strong>XX XX XX</p>
+						<p><strong>Address:</strong>Address here</p>
+						<p><strong>Contact person:</strong>Name here</p>
+						<h3 class="bg-primary">Spare Part Information</h3>
+						<h4 class="bg-info">Spare part 1</h4>
+						<p><strong>Type: </strong>Type here</p>
+						<p><strong>Model: </strong>Model name here</p>
+						<p><strong>Count: </strong>XXX</p>
+						<p><strong>Stock quantity: </strong>XXX</p>
+						<h4 class="bg-info">Spare part 2</h4>
+						<p><strong>Type: </strong>Type here</p>
+						<p><strong>Model: </strong>Model name here</p>
+						<p><strong>Count: </strong>XXX</p>
+						<p><strong>Stock quantity: </strong>XXX</p>
+					</div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  
+        </div>
+      </div>
+    </div>';
+
+    return $rightPanel.$content;
 }
 
 function getSupplierInfo(){

@@ -515,6 +515,15 @@ public class Main {
 
             // Create the triggers
             statement.executeUpdate(
+                    "CREATE TRIGGER update_bns_pts " +
+                    "AFTER INSERT ON CustomerOperation "+
+                    "FOR EACH ROW "+
+                    "BEGIN "+
+                        "UPDATE Customer SET bonus_pts = bonus_pts + (SELECT amount FROM Transaction WHERE id = NEW.transaction_id)/100 " +
+                    "WHERE email = NEW.customer_email; "+
+                    "END; "
+            );
+            statement.executeUpdate(
                     "CREATE TRIGGER update_spare_parts " +
                     "AFTER INSERT ON SparePartOrder " +
                     "FOR EACH ROW " +
@@ -526,7 +535,7 @@ public class Main {
                             "AND model = NEW.part_model; " +
                         "END IF; " +
                     "END; ");
-            statement.executeUpdate(
+            /*statement.executeUpdate(
                     "CREATE TRIGGER remove_spare_parts " +
                     "AFTER INSERT ON CustomerOperation " +
                     "FOR EACH ROW " +
@@ -556,7 +565,7 @@ public class Main {
                                 "O.op_name = NEW.op_name" +
                             "); " +
                         "END IF; " +
-                    "END;");
+                    "END;");*/
 
         } catch (Exception ex) {
             ex.printStackTrace();

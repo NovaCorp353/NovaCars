@@ -279,7 +279,7 @@ function getTechCustTrans($email, $filter)
    		JOIN Auto A ON A.plate = CO.auto_plate
     	JOIN Transaction T ON T.id = CO.transaction_id
    		WHERE CO.tech_email = '$email' AND (CO.op_name LIKE '%$filter%' OR A.model LIKE '%$filter%' 
-   				OR T.id = '$filter');";
+   				OR T.id = '$filter' OR UC.first_name LIKE '%$filter%' OR UC.last_name LIKE '%$filter%');";
 	
 		
 	 $res = $conn->query($query);
