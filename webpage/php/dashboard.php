@@ -290,89 +290,89 @@ function getRightPanel($email, $cur_tab){
 
 			if(strcmp($cur_tab, DEPARTMENT_INFO))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info <span class="sr-only">(current)</span></a></li> 
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
+				'<li class="active"><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info <span class="sr-only">(current)</span></a></li> 
+				<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions</a></li>';
 				
 			else if(strcmp($cur_tab, CUST_TRANSACTIONS))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li> 
-				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions <span class="sr-only">(current)</span></a></li>';
+				'<li><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info</a></li> 
+				<li class="active"><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions <span class="sr-only">(current)</span></a></li>';
 
 			else
 				$rightPanel .=
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li> 
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
+				'<li><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info</a></li> 
+				<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions</a></li>';
 		}
 
 		else if(strcmp($role, TECHNICIAN)){
 
 			if(strcmp($cur_tab, DEPARTMENT_INFO))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info <span class="sr-only">(current)</span></a></li>
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
+				'<li class="active"><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info <span class="sr-only">(current)</span></a></li>
+				<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions</a></li>';
 				
 			else if(strcmp($cur_tab, CUST_TRANSACTIONS))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li>
-				<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions <span class="sr-only">(current)</span></a></li>';
+				'<li><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info</a></li>
+				<li class="active"><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions <span class="sr-only">(current)</span></a></li>';
 
 			else
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li>
-				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
+				'<li><a href="#" onclick="getContent( \'' . DEPARTMENT_INFO . '\')">Department Info</a></li>
+				<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Transactions</a></li>';
 		}
 
 		else if(strcmp($role, CLERK)){
 
 			if(strcmp($cur_tab, CUST_TRANSACTIONS))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions <span class="sr-only">(current)</span></a></li>
-				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
-	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
+				'<li class="active"><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Customer Transactions <span class="sr-only">(current)</span></a></li>
+				<li><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '\')">Supplier Transactions</a></li>
+	            <li><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction</a></li>'; // TODO
 				
 			else if(strcmp($cur_tab, SUPP_TRANSACTIONS))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
-				<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
-	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
+				'<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Customer Transactions</a></li>
+				<li class="active"><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '\')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
+	            <li><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction</a></li>'; // TODO
 
 			else if(strcmp($cur_tab, NEW_TRANSACTION))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
-				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
-	            <li class="active"><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction <span class="sr-only">(current)</span></a></li>'; // TODO
+				'<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Customer Transactions</a></li>
+				<li><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '\')">Supplier Transactions</a></li>
+	            <li class="active"><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction <span class="sr-only">(current)</span></a></li>'; // TODO
 
 			else
 				$rightPanel .=
-				'<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Customer Transactions</a></li>
-				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
-	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
+				'<li><a href="#" onclick="getContent( \'' . CUST_TRANSACTIONS . '\')">Customer Transactions</a></li>
+				<li><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '\')">Supplier Transactions</a></li>
+	            <li><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction</a></li>'; // TODO
         }
 
         else if(strcmp($role, SALES_MANAGER)){
 
         	if(strcmp($cur_tab, SUPP_TRANSACTIONS))
 				$rightPanel .= 
-				'<li class="active"><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
-	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
-	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
+				'<li class="active"><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '\')">Supplier Transactions <span class="sr-only">(current)</span></a></li>
+	        	<li><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction</a></li>
+	        	<li><a href="#" onclick="getContent( \'' . SUPP_INFO . '\')">Suppliers Info</a></li>';
 				
 			else if(strcmp($cur_tab, NEW_TRANSACTION))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
-	        	<li class="active"><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction <span class="sr-only">(current)</span></a></li>
-	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
+				'<li><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '\')">Supplier Transactions</a></li>
+	        	<li class="active"><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction <span class="sr-only">(current)</span></a></li>
+	        	<li><a href="#" onclick="getContent( \'' . SUPP_INFO . '\')">Suppliers Info</a></li>';
 
 			else if(strcmp($cur_tab, SUPP_INFO))
 				$rightPanel .= 
-				'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . '">Supplier Transactions</a></li>
-	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
-	        	<li class="active"><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info <span class="sr-only">(current)</span></a></li>';
+				'<li><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '">Supplier Transactions</a></li>
+	        	<li><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction</a></li>
+	        	<li class="active"><a href="#" onclick="getContent( \'' . SUPP_INFO . '\')">Suppliers Info <span class="sr-only">(current)</span></a></li>';
 			else
 	        	$rightPanel .= 
-	        	'<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
-	        	<li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>
-	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
+	        	'<li><a href="#" onclick="getContent( \'' . SUPP_TRANSACTIONS . '\')">Supplier Transactions</a></li>
+	        	<li><a href="#" onclick="getContent( \'' . NEW_TRANSACTION . '\')">New Transaction</a></li>
+	        	<li><a href="#" onclick="getContent( \'' . SUPP_INFO . '\')">Suppliers Info</a></li>';
         }
 
         $rightPanel .= 
@@ -383,11 +383,11 @@ function getRightPanel($email, $cur_tab){
         	if( strcmp($cur_tab, CUST_PROFILE))
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
-	        	<li class="active"><a href="#" onclick="getContent( ' . CUST_PROFILE . ')">Customer Profile <span class="sr-only">(current)</span></a></li>';
+	        	<li class="active"><a href="#" onclick="getContent( \'' . CUST_PROFILE . '\')">Customer Profile <span class="sr-only">(current)</span></a></li>';
 	        else
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
-	        	<li><a href="#" onclick="getContent( ' . CUST_PROFILE . ')">Customer Profile</a></li>';
+	        	<li><a href="#" onclick="getContent( \'' . CUST_PROFILE . '\')">Customer Profile</a></li>';
         }
 
         $rightPanel .= 
