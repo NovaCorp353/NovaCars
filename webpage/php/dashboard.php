@@ -253,15 +253,15 @@ function getOverview(){
 		return getCustomerProfile($email);
 }
 
-function getRightPanel($email, $cur_tab){
-	
+function getRightPanel($email, $cur_tab)
+{
 	$role = getRole($_SESSION['user']);
 	$isCustomer = isCustomer($email);
 
 	// Determine if user is an employee
 	$employee = checkRole($email, EMPLOYEE);
-	if($employee){	
-
+	if($employee)
+	{	
 		// Assign right panel content
 		if(strcmp($cur_tab, OVERVIEW) == 0)
 			$rightPanel = 
@@ -295,7 +295,6 @@ function getRightPanel($email, $cur_tab){
 				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li> 
 				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 		}
-
 		else if(strcmp($role, TECHNICIAN) == 0){
 
 			if(strcmp($cur_tab, DEPARTMENT_INFO) == 0)
@@ -313,7 +312,6 @@ function getRightPanel($email, $cur_tab){
 				'<li><a href="#" onclick="getContent( ' . DEPARTMENT_INFO . ')">Department Info</a></li>
 				<li><a href="#" onclick="getContent( ' . CUST_TRANSACTIONS . ')">Transactions</a></li>';
 		}
-
 		else if(strcmp($role, CLERK) == 0){
 
 			if(strcmp($cur_tab, CUST_TRANSACTIONS) == 0)
@@ -340,7 +338,6 @@ function getRightPanel($email, $cur_tab){
 				<li><a href="#" onclick="getContent( ' . SUPP_TRANSACTIONS . ')">Supplier Transactions</a></li>
 	            <li><a href="#" onclick="getContent( ' . NEW_TRANSACTION . ')">New Transaction</a></li>'; // TODO
         }
-
         else if(strcmp($role, SALES_MANAGER) == 0){
 
         	if(strcmp($cur_tab, SUPP_TRANSACTIONS) == 0)
@@ -367,12 +364,10 @@ function getRightPanel($email, $cur_tab){
 	        	<li><a href="#" onclick="getContent( ' . SUPP_INFO . ')">Suppliers Info</a></li>';
         }
 
-        $rightPanel .= 
-        '</ul>';
-
-        if($isCustomer){
-
-        	if( strcmp($cur_tab, CUST_PROFILE) == 0)
+        $rightPanel .= '</ul>';
+        if($isCustomer)
+	    {
+	    	if( strcmp($cur_tab, CUST_PROFILE) == 0)
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
 	        	<li class="active"><a href="#" onclick="getContent( ' . CUST_PROFILE . ')">Customer Profile <span class="sr-only">(current)</span></a></li>';
@@ -380,11 +375,18 @@ function getRightPanel($email, $cur_tab){
 	        	$rightPanel .= 
 	        	'<ul class="nav nav-sidebar">
 	        	<li><a href="#" onclick="getContent( \'' . CUST_PROFILE . '\')">Customer Profile</a></li>';
-	        	$rightPanel .= 
-	   		'</div>';
+	        $rightPanel .=	'</ul></div>';
 	   		return $rightPanel;
-        }
-	} else {
+	    } 
+	    else 
+	    {
+	    	$rightPanel .=	'</div>';
+	    	return $rightPanel;
+	    }
+
+    }    
+	else 
+	{
 		$rightPanel = 
 		'<div class="container-fluid">
 		<div class="row">
@@ -393,7 +395,6 @@ function getRightPanel($email, $cur_tab){
 					<li class="active"><a href="#">Customer Profile <span class="sr-only">(current)</span></a></li>
 				</ul>
 			</div>';
-
 		return $rightPanel;
 	}
 }
@@ -445,20 +446,20 @@ session_start();
 
 // Check what action is required
 if(!isset($_POST['action']))
-	$res = getCustomerTransactions();
-else if(strcmp($_POST['action'], OVERVIEW))
 	$res = getOverview();
-else if(strcmp($_POST['action'], DEPARTMENT_INFO))
+else if(strcmp($_POST['action'], OVERVIEW) == 0)
+	$res = getOverview();
+else if(strcmp($_POST['action'], DEPARTMENT_INFO) == 0)
 	$res = getDepartmentInfo();
-else if(strcmp($_POST['action'], CUST_TRANSACTIONS))
+else if(strcmp($_POST['action'], CUST_TRANSACTIONS) == 0)
 	$res = getCustomerTransactions();
-else if(strcmp($_POST['action'], SUPP_TRANSACTIONS))
+else if(strcmp($_POST['action'], SUPP_TRANSACTIONS) == 0)
 	$res = getSupplierTransactions();
-else if(strcmp($_POST['action'], NEW_TRANSACTION))
+else if(strcmp($_POST['action'], NEW_TRANSACTION) == 0)
 	$res = getNewTrasaction();
-else if(strcmp($_POST['action'], SUPP_INFO))
+else if(strcmp($_POST['action'], SUPP_INFO) == 0)
 	$res = getSupplierInfo();
-else if(strcmp($_POST['action'], CUST_PROFILE))
+else if(strcmp($_POST['action'], CUST_PROFILE) == 0)
 	$res = getCustomerProfile();
 else 
 	$res = getOverview();
