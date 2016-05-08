@@ -18,6 +18,8 @@ define("SUPP_TRANSACTIONS", "SupplierTransactions");
 define("NEW_TRANSACTION", "NewTransaction");
 define("SUPP_INFO", "SupplierInfo");
 define("CUST_PROFILE", "CustomerProfile");
+define("FILTER_EMPLOYEE", "FilterEmployee");
+define("NEW_EMPLOYEE", "NewEmployee");
 
 function checkRole($email, $tablename){
 	$conn = openConn();
@@ -135,5 +137,65 @@ function getMgrCustTrans($dept_name, $filter)
 	 
 	 closeConn($conn);
 	 return 0;
+}
+
+function getDepartment($dept_name){
+	$conn = openConn();
+	
+	$query = 
+	"SELECT department.budget, department.expenditure, COUNT(employee.email) AS cnt_employees
+	FROM Department JOIN Employee ON department.name = employee.dept_name 
+	WHERE department.name = '$dept_name' GROUP BY department.name, department.budget, department.expenditure;";
+ 
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) == 1)
+	{
+	 	closeConn($conn);
+	 	return $res->fetch_assoc();
+	}
+	 
+	closeConn($conn);
+	return 0;
+}
+
+function getOperations($dept_name){
+	$conn = openConn();
+	
+	$query = 
+	"SELECT op_name, cost 
+	FROM Operation 
+	WHERE dept_name = '$dept_name'";
+ 
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) > 0)
+	{
+	 	closeConn($conn);
+	 	return $res;
+	}
+	 
+	closeConn($conn);
+	return null;
+}
+
+function getEmployees($dept_name){
+	$conn = openConn();
+	
+	$query = 
+	 "SELECT user.email, first_name, last_name, salary, expertise_lvl 
+	 FROM User JOIN Employee ON user.email = employee.email 
+	 WHERE dept_name = '$dept_name'";
+ 
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) > 0)
+	{
+	 	closeConn($conn);
+	 	return $res;
+	}
+	 
+	closeConn($conn);
+	return null;
 }
 ?>

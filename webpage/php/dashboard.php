@@ -50,7 +50,118 @@ function getCustomerProfile(){
 }
 
 function getDepartmentInfo(){
-	// TODO
+	// Getting right panel
+	$rightPanel = getRightPanel($_SESSION['user'], DEPARTMENT_INFO);
+
+	// Getting content
+	if(strcmp($_SESSION['role'], MANAGER) == 0){
+		$header = getMgrCustTransHeader($_SESSION["user"]);
+		$deptName = $header['dept_name'];
+		$firstName = $header['first_name'];
+		$lastName = $header['last_name'];
+
+		$departmentInfo = getDepartment($deptName);
+		$budget = $departmentInfo['budget']; 
+		$expenditures = $departmentInfo['expenditure']; 
+		$revenue = getMgrCustTransStats($deptName)['tot_revenue'];
+		$nrEmployees = $departmentInfo['cnt_employees']; 
+
+		$operations = getOperations($deptName);
+		$employees = getEmployees($deptName);
+
+		$content = 
+		'<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		    <h1 class="page-header">'.$deptName.'</h1>
+			<h3 class="text-muted">Manager: '.$firstName.' '.$lastName.'</h3>
+			
+			<div class="row">
+				<div class="col-sm-12 col-md-6">
+					<div class="panel panel-info">
+						  <div class="panel-heading">Quick Information</div>
+						  <ul class="list-group">
+							<li class="list-group-item"><strong>Allocated Budget</strong>: '.$budget.'</li>
+							<li class="list-group-item"><strong>Total Expenditures</strong>:'.$expenditures.'</li>
+							<li class="list-group-item"><strong>Total Revenue</strong>: '.$revenue.'</li>
+							<li class="list-group-item"><strong>Number of Employees</strong>: '.$nrEmployees.'</li>
+						  </ul>
+					</div>
+				</div>
+				
+				<div class="col-sm-12 col-md-6">
+					<div class="panel panel-info">
+						  <div class="panel-heading">Provided Operations</div>
+						  <ul class="list-group">';
+
+		while($data = $operations->fetch_assoc()){
+			$content .= '<li class="list-group-item"><strong>'.$data['op_name'].'</strong> - Cost: '.$data['cost'].'</li>';
+
+		}	
+		$content .=
+						  '</ul>
+					</div>
+				</div>
+			</div>
+			
+			<h2 class="sub-header">Employees</h2>
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<input type="text" placeholder="Filter by name" class="form-control">
+					<button type="submit" onclick="getEmployeesFiltered(\''.FILTER_EMPLOYEE.'\')" class="btn btn-primary">Filter</button>	
+				</div>
+			</form>
+	          <div class="table-responsive">
+	            <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                  <th>#</th>
+	                  <th>Name</th>
+	                  <th>Email</th>
+	                  <th>Salary</th>
+	                  <th>Expertise Level</th>
+					  <th>Edit</th>
+	                </tr>
+	              </thead>
+	              <tbody>';
+
+	    $count = 1;
+	    while($data = $employees->fetch_assoc()){
+	    	$content .= '<tr>
+                  <td>'.$count.'</td>
+				  <td>'.$data['first_name'].' '.$data['last_name'].'</td>
+                  <td>'.$data['email'].'</td>
+                  <td>'.$data['salary'].'</td>
+                  <td>'.$data['expertise_lvl'].'</td>
+                  <td><a onclick="editEmployee(\''.$data['email'].'\')"><span class="glyphicon glyphicon-edit"></span></a></td>
+                </tr>';
+            $count++;
+	    }
+	    
+	    $content .= '</tbody>
+	            </table>
+	          </div>
+
+			<form class="form">
+				  <button type="button" class="btn btn-success" onclick="addEmployee(\''.NEW_EMPLOYEE.'\')">
+				  <span class="glyphicon glyphicon-plus"></span> New employee
+				</button>
+			</form> 
+			
+	        </div>
+	      </div>';
+		return $rightPanel . $content;
+	} 
+	else if(strcmp($role, TECHNICIAN) == 0)
+	{
+		// TODo
+	}
+	else if(strcmp($role, CLERK) == 0)
+	{
+		// TODO
+	}
+	else
+	{
+		//okay
+	}
 }
 
 function getCustomerTransactions(){
@@ -113,23 +224,23 @@ function getCustomerTransactions(){
               </thead>
               <tbody>';
 
-     while($data = $trans->fetch_assoc())
-     {
-     	$custName = $data['f_name'].' '.$data['l_name'];
-     	$techName = $data['first_name'].' '.$data['last_name'];
-     	$content .= 
-     	'<tr>
-     		<td>'.$data['id'].'</td>
-     		<td>'.$custName.'</td>
-     		<td>'.$data['model'].'</td>
-     		<td>'.$data['op_name'].'</td>
-     		<td>'.$techName.'</td>
-     		<td>'.$data['amount'].'</td>
-     		<td>'.$data['date'].'</td>
-     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
-     	</tr>';
-     }
-	 $content .= '
+	     while($data = $trans->fetch_assoc())
+	     {
+	     	$custName = $data['f_name'].' '.$data['l_name'];
+	     	$techName = $data['first_name'].' '.$data['last_name'];
+	     	$content .= 
+	     	'<tr>
+	     		<td>'.$data['id'].'</td>
+	     		<td>'.$custName.'</td>
+	     		<td>'.$data['model'].'</td>
+	     		<td>'.$data['op_name'].'</td>
+	     		<td>'.$techName.'</td>
+	     		<td>'.$data['amount'].'</td>
+	     		<td>'.$data['date'].'</td>
+	     		<td><a data-toggle="modal" data-target="#detailed_info_modal"><span class="glyphicon glyphicon-info-sign"></span></a></td>
+	     	</tr>';
+	     }
+		 $content .= '
               </tbody>
             </table>
           </div>
@@ -468,6 +579,10 @@ else if(strcmp($_POST['action'], SUPP_INFO) == 0)
 	$res = getSupplierInfo();
 else if(strcmp($_POST['action'], CUST_PROFILE) == 0)
 	$res = getCustomerProfile();
+else if(strcmp($_POST['action'], FILTER_EMPLOYEE) == 0)
+	$res = getEmployeesFiltered();
+else if(strcmp($_POST['action'], NEW_EMPLOYEE) == 0)
+	$res = getNewEmployee();
 else 
 	$res = getOverview();
 echo $res;

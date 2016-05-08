@@ -50,3 +50,14 @@ function getContent(contentType){
  		});
  }
 
+function getEmployeesFiltered(data){
+	// TODO
+}
+
+function editEmployee(data){
+	// TODO
+}
+
+function addEmployee(data){
+	// TODO
+}
