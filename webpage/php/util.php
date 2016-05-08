@@ -77,7 +77,7 @@ function getEmployee($email){
 
 function getMgrCustTransHeader($email)
 {
-	global $conn;
+	$conn = openConn();
 
 	$query = 
 	"SELECT U.first_name, U.last_name, E.dept_name 
@@ -87,7 +87,7 @@ function getMgrCustTransHeader($email)
 	 $res = $conn->query($query);
 
 	 if(mysqli_num_rows($res) == 1)
-	 	return $res;
+	 	return $res->fetch_assoc();
 	 return 0;
 }
 
@@ -104,7 +104,7 @@ function getMgrCustTransStats($dept_name)
 	if(mysqli_num_rows($res) == 1)
 	{
 		closeConn($conn);
-		return $res;
+		return $res->fetch_assoc();
 	}
 	
 	closeConn($conn);
@@ -127,7 +127,7 @@ function getMgrCustTrans($dept_name, $filter)
 
 	$res = $conn->query($query);
 
-	 if(mysqli_num_rows($res) == 1)
+	 if(mysqli_num_rows($res)>0)
 	 {
 	 	closeConn($conn);
 	 	return $res;
