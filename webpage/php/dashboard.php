@@ -114,7 +114,7 @@ function getDepartmentInfo(){
 		$firstName = $header['first_name'];
 		$lastName = $header['last_name'];
 
-		$departmentInfo = getDepartment($deptName);
+		$departmentInfo = getDepartmentDetailed($deptName);
 		$budget = $departmentInfo['budget']; 
 		$expenditures = $departmentInfo['expenditure']; 
 		$revenue = getMgrCustTransStats($deptName)['tot_revenue'];
@@ -204,11 +204,11 @@ function getDepartmentInfo(){
 	      </div>';
 		return $rightPanel . $content;
 	} 
-	else if(strcmp($role, TECHNICIAN) == 0)
+	else if(strcmp($_SESSION['role'], TECHNICIAN) == 0)
 	{
 		// TODo
 	}
-	else if(strcmp($role, CLERK) == 0)
+	else if(strcmp($_SESSION['role'], CLERK) == 0)
 	{
 		// TODO
 	}

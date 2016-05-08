@@ -303,7 +303,7 @@ function getCustHeader($email)
 	 return 0;
 }
 
-function getDepartment($dept_name){
+function getDepartmentDetailed($dept_name){
 	$conn = openConn();
 	
 	$query = 
