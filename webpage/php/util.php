@@ -61,12 +61,12 @@ function getEmployee($email){
 	$conn = openConn();
 
 	$query = 
-	"SELECT salary, role, expertise_lvl, dept_name, since
+	"SELECT salary, expertise_lvl, dept_name, since
 	FROM Employee 
 	WHERE email = '$email';";
 
 	$res = $conn->query($query);
-	
+
 	if(mysqli_num_rows($res) == 1){
 		closeConn($conn);
 		return $res->fetch_assoc();
