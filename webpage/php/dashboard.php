@@ -192,7 +192,7 @@ function getDepartmentInfo()
 		$revenue = getMgrCustTransStats($deptName)['tot_revenue'];
 		$nrEmployees = $departmentInfo['cnt_employees']; 
 
-		$operations = getOperations($deptName);
+		$operations = getOperations2($deptName);
 		$employees = getEmployees($deptName, "");
 
 		$content = 

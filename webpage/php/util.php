@@ -348,6 +348,24 @@ function getOperations(){
 	return null;
 }
 
+function getOperations2($dept_name){
+	$conn = openConn();
+	
+	$query = "SELECT O.op_name, O.cost "
+    . "FROM Operation O WHERE O.dept_name = '$dept_name'";
+ 
+	$res = $conn->query($query);
+
+	if(mysqli_num_rows($res) > 0)
+	{
+	 	closeConn($conn);
+	 	return $res;
+	}
+	 
+	closeConn($conn);
+	return null;
+}
+
 function getEmployees($dept_name, $filter){
 	$conn = openConn();
 	
